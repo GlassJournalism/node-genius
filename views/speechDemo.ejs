@@ -1,0 +1,24 @@
+<script type="text/javascript">
+  setTimeout(function() {
+    console.log('registering message listener');
+    socket.on('message', function messageReceived(message) {
+      console.log(message);
+      if(message.model === 'speechsnippet'){
+        document.getElementById('container').innerHTML += message.data.text + '<br>'
+      }
+    });
+  }, 1000);
+
+  function load(){
+    socket.get('/SpeechSnippet', function(snippets){
+      for(var i=0; i < snippets.length; i++){
+        document.getElementById('container').innerHTML += snippets[i].text + '<br>'
+      }
+    });
+  }
+
+  setTimeout(load, 1100);
+
+</script>
+<div id="container">
+</div>
