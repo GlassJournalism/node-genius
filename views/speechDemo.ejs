@@ -23,10 +23,12 @@
         socket.delete('/SpeechSnippet/'+snippets[i].id);
       }
     });
+    document.getElementById('container').innerHTML = "";
   }
 
   setTimeout(load, 1100);
 
 </script>
+<button onclick="clear()">Clear</button>
 <div id="container">
 </div>
