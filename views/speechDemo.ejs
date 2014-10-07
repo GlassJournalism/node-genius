@@ -17,6 +17,13 @@
     });
   }
 
+  function clear(){
+    socket.get('/SpeechSnippet', function(snippets){
+      for(var i=0; i < snippets.length; i++){
+        socket.delete('/SpeechSnippet/'+snippets[i].id);
+      }
+    });
+
   setTimeout(load, 1100);
 
 </script>
