@@ -1,0 +1,8 @@
+<div class="container clearfix">
+    Template index
+    <% for(var i = 0; i < templates.length; i++){ %>
+    <div><%= templates[i].name %></div>
+    <iframe style="width:640px; height:360px; border: none"
+            src="/template/preview/<%= templates[i].id %>"></iframe>
+    <% } %>
+</div>

@@ -2,7 +2,7 @@
  * TemplateController
  *
  * @module      :: Controller
- * @description	:: A set of functions called `actions`.
+ * @description    :: A set of functions called `actions`.
  *
  *                 Actions contain code telling Sails how to respond to a certain type of request.
  *                 (i.e. do stuff, then send some JSON, show an HTML page, or redirect to another URL)
@@ -16,15 +16,39 @@
  */
 
 module.exports = {
-    
-  
+
+    /**
+     * /template/index
+     * Show a list of all the defined templates
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    index: function (req, res) {
+        Template.find(function (err, templates) {
+            return res.view('template/index',
+                {
+                    templates: templates
+                });
+        });
+    },
+
+    preview: function (req, res) {
+        console.log(req.params.id);
+        Template.findOne({id: req.params.id}).exec(function (err, template) {
+            console.log(template);
+            return res.view('template/preview', {
+                template: template
+            })
+        });
+    },
 
 
-  /**
-   * Overrides for the settings in `config/controllers.js`
-   * (specific to TemplateController)
-   */
-  _config: {}
+    /**
+     * Overrides for the settings in `config/controllers.js`
+     * (specific to TemplateController)
+     */
+    _config: {}
 
-  
+
 };
