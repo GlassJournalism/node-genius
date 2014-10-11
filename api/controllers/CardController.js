@@ -37,7 +37,7 @@ module.exports = {
 function compileCard(cardId, callback) {
     Card.findOne({id: cardId}).exec(function (err, card) {
         Template.findOne({id: card.templateId}).exec(function (err, template) {
-            callback(handlebars.compile(template.html)(card.variables));
+            callback(handlebars.compile(template.handlebarsTemplate)(card.variables));
         });
     });
 }
