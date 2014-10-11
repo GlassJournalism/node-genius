@@ -11,7 +11,8 @@ module.exports = {
     attributes: {
 
         templateId: 'string',
-        variables: 'json'
+        variables: 'json',
+        triggerWords: 'array'
 
     }
 

@@ -20,7 +20,15 @@ var handlebars = require('handlebars');
 module.exports = {
 
     preview: function (req, res) {
-        compileCard(req.params.id, function (html) {
+        compileCard(req.params.id, function (err, html) {
+            res.write('<html></html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
+            res.write(html + '</body></html>');
+            res.end();
+        });
+    },
+
+    find: function (req, res) {
+        compileCard(req.params.id, function (err, html) {
             return res.send(html);
         });
     },
@@ -36,8 +44,16 @@ module.exports = {
 
 function compileCard(cardId, callback) {
     Card.findOne({id: cardId}).exec(function (err, card) {
+        if (err) {
+            callback(err);
+            return;
+        }
         Template.findOne({id: card.templateId}).exec(function (err, template) {
-            callback(handlebars.compile(template.handlebarsTemplate)(card.variables));
+            if (err) {
+                callback(err);
+                return;
+            }
+            callback(null, handlebars.compile(template.handlebarsTemplate)(card.variables));
         });
     });
 }
