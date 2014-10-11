@@ -16,20 +16,77 @@
  */
 
 var handlebars = require('handlebars');
+var async = require('async');
 
 module.exports = {
 
     preview: function (req, res) {
-        compileCard(req.params.id, function (err, html) {
-            res.write('<html></html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
-            res.write(html + '</body></html>');
-            res.end();
+        Card.findOne({id: req.params.id}).exec(function (err, card) {
+            if (err) {
+                res.status(500);
+                return;
+            }
+            compileCard(card, function (err, html) {
+                res.write('<html></html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
+                res.write(html + '</body></html>');
+                res.end();
+            });
         });
     },
 
     find: function (req, res) {
-        compileCard(req.params.id, function (err, html) {
-            return res.send(html);
+        var matches = [];
+        async.each(req.param('words').split(','), function (word, callback) {
+            Card.find().where({triggerWords: word}).exec(function (err, cards) {
+                async.each(cards, function (card, callback) {
+                    matches.push(card);
+                    callback();
+                });
+                callback(err);
+            });
+        }, function (err) {
+            if (err) {
+                res.status(500);
+                return;
+            }
+
+            if (matches.length == 0) {
+                res.status(404);
+                return;
+            }
+
+            var matchesWithOccurrences = new Array(matches.length);
+            for (var i = 0; i < matches.length; i++) {
+                var card = matches[i];
+
+                var found = false;
+                for (var j = 0; j < matchesWithOccurrences.length; j++) {
+                    if (matchesWithOccurrences[j] && matchesWithOccurrences[j].card === card) {
+                        found = true;
+                        matchesWithOccurrences[j].occurrences++;
+                    }
+                }
+                if (!found) {
+                    matchesWithOccurrences.push({card: card, occurrences: 1});
+                }
+            }
+
+            matchesWithOccurrences.sort(function (a, b) {
+                if (a.occurrences < b.occurrences)
+                    return -1;
+                if (a.occurrences > b.occurrences)
+                    return 1;
+                return 0;
+            });
+            var bestCard = matchesWithOccurrences[0].card;
+
+            compileCard(bestCard, function (err, html) {
+                if (err) {
+                    res.status(500);
+                    return res.end();
+                }
+                return res.send(html);
+            });
         });
     },
 
@@ -37,23 +94,17 @@ module.exports = {
      * Overrides for the settings in `config/controllers.js`
      * (specific to CardController)
      */
-    _config: {}
-
+    _config: {
+    }
 
 };
 
-function compileCard(cardId, callback) {
-    Card.findOne({id: cardId}).exec(function (err, card) {
+function compileCard(card, callback) {
+    Template.findOne({id: card.templateId}).exec(function (err, template) {
         if (err) {
             callback(err);
             return;
         }
-        Template.findOne({id: card.templateId}).exec(function (err, template) {
-            if (err) {
-                callback(err);
-                return;
-            }
-            callback(null, handlebars.compile(template.handlebarsTemplate)(card.variables));
-        });
+        callback(null, handlebars.compile(template.handlebarsTemplate)(card.variables));
     });
 }
