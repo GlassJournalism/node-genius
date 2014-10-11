@@ -1,17 +1,10 @@
 <div id="container" class="container clearfix">
     <% for(var i = 0; i < templates.length; i++){ %>
-    <div class="item">
-        <div><%= templates[i].name %></div>
-        <iframe class="glass-preview" src="/template/preview/<%= templates[i].id %>"></iframe>
+    <div class="small-5 columns item">
+        <div class="panel">
+            <div><h1><%= templates[i].name %></h1></div>
+            <iframe class="glass-preview" src="/template/preview/<%= templates[i].id %>"></iframe>
+        </div>
     </div>
     <% } %>
 </div>
-
-<script>
-    var container = document.querySelector('#container');
-    var msnry = new Masonry(container, {
-        // options
-        columnWidth: 340,
-        itemSelector: '.item'
-    });
-</script>

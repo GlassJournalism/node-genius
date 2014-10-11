@@ -21,6 +21,8 @@
       
     -->
 
+    <link rel="stylesheet" href="/foundation/css/foundation.min.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
     <link rel="stylesheet" href="/styles/templates.css"/>
 
     <!--
@@ -41,9 +43,42 @@
 
 <body>
 
-<!-- Include the view file for the current controller/route -->
-<%- body %>
 
+<div class="off-canvas-wrap" data-offcanvas>
+    <div class="inner-wrap">
+        <nav class="tab-bar">
+            <section class="left-small">
+                <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            </section>
+
+            <section class="middle tab-bar-section">
+                <h1 class="title">Glass Genius</h1>
+            </section>
+
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+            <ul class="off-canvas-list">
+                <li><label>Account</label></li>
+                <li><a href="#">My Account</a></li>
+            </ul>
+            <ul class="off-canvas-list">
+                <li><label>Content</label></li>
+                <li><a href="#">View Entries</a></li>
+            </ul>
+        </aside>
+
+        <section class="main-section">
+            <%- body %>
+        </section>
+
+        <a class="exit-off-canvas"></a>
+
+    </div>
+</div>
+
+
+<!-- Include the view file for the current controller/route -->
 
 <!--
 
@@ -63,9 +98,14 @@
 <script type="text/javascript" src="/js/app.js"></script>
 
 <!-- Your scripts here? -->
-<!-- Your scripts here? -->
-<!-- Your scripts here? -->
 
+<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/modernizr/modernizr.js"></script>
+<script type="text/javascript" src="/foundation/js/foundation.min.js"></script>
+
+<script>
+    $(document).foundation();
+</script>
 
 <!--
 

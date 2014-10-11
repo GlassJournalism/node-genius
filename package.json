@@ -19,5 +19,8 @@
   "main": "app.js",
   "repository": "",
   "author": "",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "grunt-contrib-sass": "~0.8.1"
+  }
 }

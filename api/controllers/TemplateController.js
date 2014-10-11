@@ -37,7 +37,8 @@ module.exports = {
         Template.findOne({id: req.params.id}).exec(function (err, template) {
             console.log(template);
             return res.view('template/preview', {
-                rendered: template.handlebarsTemplate
+                rendered: template.handlebarsTemplate,
+                layout: 'cardpreview'
             })
         });
     },
