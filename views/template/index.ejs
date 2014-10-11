@@ -1,7 +1,17 @@
-<div class="container clearfix">
-    Template index
+<div id="container" class="container clearfix">
     <% for(var i = 0; i < templates.length; i++){ %>
-    <div><%= templates[i].name %></div>
-    <iframe class="glass-preview" src="/template/preview/<%= templates[i].id %>"></iframe>
+    <div class="item">
+        <div><%= templates[i].name %></div>
+        <iframe class="glass-preview" src="/template/preview/<%= templates[i].id %>"></iframe>
+    </div>
     <% } %>
 </div>
+
+<script>
+    var container = document.querySelector('#container');
+    var msnry = new Masonry(container, {
+        // options
+        columnWidth: 340,
+        itemSelector: '.item'
+    });
+</script>
