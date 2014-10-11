@@ -15,6 +15,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var handlebars = require('handlebars');
+
 module.exports = {
 
     /**
@@ -38,7 +40,7 @@ module.exports = {
         Template.findOne({id: req.params.id}).exec(function (err, template) {
             console.log(template);
             return res.view('template/preview', {
-                template: template
+                rendered: handlebars.compile(template.html)()
             })
         });
     },
