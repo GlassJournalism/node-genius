@@ -14,7 +14,7 @@ module.exports = {
             } else {
                 return res.view('category/index',
                     {
-                        templates: categories
+                        categories: categories
                     });
             }
         });
