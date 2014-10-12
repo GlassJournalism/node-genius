@@ -26,10 +26,14 @@ module.exports = {
      */
     index: function (req, res) {
         Template.find(function (err, templates) {
-            return res.view('template/index',
-                {
-                    templates: templates
-                });
+            if (req.isJson || req.isSocket) {
+                return res.json(templates);
+            } else {
+                return res.view('template/index',
+                    {
+                        templates: templates
+                    });
+            }
         });
     },
 

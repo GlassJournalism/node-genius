@@ -8,10 +8,7 @@
 <label>
     Template
     <select class="template-select">
-        <% templates.forEach(function(template) { %>
         <option value="noneselected">Choose a template</option>
-        <option value="<%= template.id %>"><%= template.name %></option>
-        <% }); %>
     </select>
 </label>
 
@@ -82,5 +79,12 @@
         }
 
         $(document).on('keyup change', '.variable-value', updatePreview);
+
+        socket.get('/template/', function (templates) {
+            var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
+            templates.forEach(function (template) {
+                $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
+            })
+        })
     }
 </script>
