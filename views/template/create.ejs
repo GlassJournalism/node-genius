@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="/styles/template-create.css">
+
+<input class="name-input" type="text" placeholder="Name"/>
+
+<iframe class="glass-preview" id="template-preview"></iframe>
+<div class="html-editor" id="editor"></div>
+
+<div style="clear: both; height:0"></div>
+
+<button class="save-button">Save</button>
+<button class="button alert clear-button">Clear</button>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/tomorrow");
+        editor.getSession().setMode("ace/mode/html");
+
+        editor.getSession().on('change', function change() {
+            var text = editor.getValue();
+            var template = Handlebars.compile(text);
+
+            var variables = text.match(/{{(.*?)}}/g);
+
+            var placeholders = {};
+
+            if (variables && variables.length > 0) {
+                variables.forEach(function (variable) {
+                    var variableName = variable.replace(/{{/g, '').replace(/}}/g, '');
+                    placeholders[variableName] = '<' + variableName + '>';
+                });
+            }
+
+            console.log(template(placeholders));
+
+            $('#template-preview').contents().find('html').html('');
+            $('#template-preview').contents().find('html').append('<link rel="stylesheet" href="/styles/glass-preview.css"/>');
+            $('#template-preview').contents().find('html').append(template(placeholders));
+        });
+
+        $('.save-button').on('click', function saveClick() {
+            $.post('/template/create', {
+                name: $('.name-input').val(),
+                handlebarsTemplate: editor.getValue()
+            }, function success(data) {
+                var id = data.id;
+                window.location.href = '/template/edit/' + id;
+            });
+        });
+    }
+</script>
