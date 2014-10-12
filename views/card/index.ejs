@@ -6,7 +6,7 @@
     <% for(var i = 0; i < cards.length; i++){ %>
     <div class="small-12 medium-12 large-9 xlarge-6 columns card-item">
         <div class="panel">
-            <div><h1><a href="/card/edit/<%- cards[i].id %>" style="color: #555555"><%= cards[i].name %></a></h1>
+            <div><h1><a href="/card/edit/<%- cards[i].id %>" style="color: #000000"><%= cards[i].name %></a></h1>
             </div>
             <iframe class="glass-preview" src="/card/preview/<%= cards[i].id %>"></iframe>
         </div>
