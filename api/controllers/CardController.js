@@ -44,59 +44,65 @@ module.exports = {
     },
 
     find: function (req, res) {
-        var matches = [];
-        async.each(req.param('words').split(','), function (word, callback) {
-            Card.find().where({triggerWords: word}).exec(function (err, cards) {
-                async.each(cards, function (card, callback) {
-                    matches.push(card);
-                    callback();
+        if (req.params.id) {
+            Card.find({id: req.params.id}, function (err, card) {
+                return res.json(card);
+            });
+        } else {
+            var matches = [];
+            async.each(req.param('words').split(','), function (word, callback) {
+                Card.find().where({triggerWords: word}).exec(function (err, cards) {
+                    async.each(cards, function (card, callback) {
+                        matches.push(card);
+                        callback();
+                    });
+                    callback(err);
                 });
-                callback(err);
-            });
-        }, function (err) {
-            if (err) {
-                res.status(500);
-                return;
-            }
-
-            if (matches.length == 0) {
-                res.status(404);
-                return;
-            }
-
-            var matchesWithOccurrences = new Array(matches.length);
-            for (var i = 0; i < matches.length; i++) {
-                var card = matches[i];
-
-                var found = false;
-                for (var j = 0; j < matchesWithOccurrences.length; j++) {
-                    if (matchesWithOccurrences[j] && matchesWithOccurrences[j].card === card) {
-                        found = true;
-                        matchesWithOccurrences[j].occurrences++;
-                    }
-                }
-                if (!found) {
-                    matchesWithOccurrences.push({card: card, occurrences: 1});
-                }
-            }
-
-            matchesWithOccurrences.sort(function (a, b) {
-                if (a.occurrences < b.occurrences)
-                    return -1;
-                if (a.occurrences > b.occurrences)
-                    return 1;
-                return 0;
-            });
-            var bestCard = matchesWithOccurrences[0].card;
-
-            compileCard(bestCard, function (err, html) {
+            }, function (err) {
                 if (err) {
                     res.status(500);
-                    return res.end();
+                    return;
                 }
-                return res.send(html);
+
+                if (matches.length == 0) {
+                    res.status(404);
+                    return;
+                }
+
+                var matchesWithOccurrences = new Array(matches.length);
+                for (var i = 0; i < matches.length; i++) {
+                    var card = matches[i];
+
+                    var found = false;
+                    for (var j = 0; j < matchesWithOccurrences.length; j++) {
+                        if (matchesWithOccurrences[j] && matchesWithOccurrences[j].card === card) {
+                            found = true;
+                            matchesWithOccurrences[j].occurrences++;
+                        }
+                    }
+                    if (!found) {
+                        matchesWithOccurrences.push({card: card, occurrences: 1});
+                    }
+                }
+
+                matchesWithOccurrences.sort(function (a, b) {
+                    if (a.occurrences < b.occurrences)
+                        return -1;
+                    if (a.occurrences > b.occurrences)
+                        return 1;
+                    return 0;
+                });
+                var bestCard = matchesWithOccurrences[0].card;
+
+                compileCard(bestCard, function (err, html) {
+                    if (err) {
+                        res.status(500);
+                        return res.end();
+                    }
+                    return res.send(html);
+                });
             });
-        });
+        }
     },
 
     createPage: function (req, res) {
