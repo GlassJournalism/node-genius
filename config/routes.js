@@ -40,11 +40,15 @@ module.exports.routes = {
         view: 'speechDemo'
     },
 
+    '/photo/upload': {
+        view: '/photo/upload'
+    },
+
     'get /template/create': {
         view: 'template/create'
     },
 
-    'post /template/create': 'TemplateController.create',
+    'post /template/create': 'TemplateController.create'
 
     /*
      // But what if you want your home page to display
