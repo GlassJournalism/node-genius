@@ -44,7 +44,7 @@ module.exports.routes = {
         view: 'template/create'
     },
 
-    'post /template/create': 'TemplateController.create',
+    'post /template/create': 'TemplateController.create'
 
     /*
      // But what if you want your home page to display
