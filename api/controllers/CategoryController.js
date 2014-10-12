@@ -6,6 +6,15 @@
  */
 
 module.exports = {
+
+    index: function (req, res) {
+        Category.find(function (err, categories) {
+            return res.view('category/index',
+                {
+                    categories: categories
+                });
+        });
+    }
 	
 };
 
