@@ -62,6 +62,7 @@
 
         $('.clear-button').on('click', function saveClick() {
             <% if(typeof templateEditing != 'undefined') { %>
+
             var url = '/template/<%- templateEditing.id %>';
             $.ajax({
                 type: 'DELETE',
@@ -70,8 +71,13 @@
                     window.location.href = '/template/create'
                 }
             });
-            <% } %>
 
+            <% } else { %>
+
+            editor.setValue("");
+            $('.name-input').val('');
+
+            <% } %>
         });
     }
 </script>
