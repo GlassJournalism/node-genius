@@ -68,7 +68,7 @@ module.exports = {
         } else {
             var matches = [];
             async.each(req.param('words').split(','), function (word, callback) {
-                Card.find().where({triggerWords: word}).exec(function (err, cards) {
+                Card.find().populate('template').where({triggerWords: word}).exec(function (err, cards) {
                     async.each(cards, function (card, callback) {
                         matches.push(card);
                         callback();
