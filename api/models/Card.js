@@ -12,7 +12,11 @@ module.exports = {
 
         templateId: 'string',
         variables: 'json',
-        triggerWords: 'array'
+        triggerWords: 'array',
+
+        category: {
+            model: 'category'
+        }
 
     }
 
