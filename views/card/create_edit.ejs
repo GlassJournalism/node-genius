@@ -47,13 +47,27 @@
     <div class="small-4 columns"></div>
 </div>
 
+<% } else { %>
+previewTemplate = Handlebars.compile("<%- cardEditing.template.handlebarsTemplate %>");
+var variables = "<%- cardEditing.template.handlebarsTemplate %>".match(/{{(.*?)}}/g);
+$('.variables-container').html('');
+if (variables) {
+for (var i = 0; i < variables.length; i++) {
+variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
+$('.variables-container')
+.append(variableRowTemplate({name: variables[i]}))
+.append('
+<div style="clear: both; height: 0"></div>');
+}
+}
+
 <% } %>
 
 <div class="row">
 
-<iframe class="glass-preview" id="card-preview"></iframe>
+    <iframe class="glass-preview" id="card-preview"></iframe>
 
-<div class="variables-container"></div>
+    <div class="variables-container"></div>
 
 </div>
 
@@ -132,6 +146,7 @@
         });
 
         socket.get('/category/', function (categories) {
+            console.log(categories);
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             categories.forEach(function (category) {
                 console.log(category);
