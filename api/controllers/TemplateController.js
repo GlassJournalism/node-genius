@@ -26,7 +26,7 @@ module.exports = {
      */
     index: function (req, res) {
         Template.find(function (err, templates) {
-            if (req.isJson || req.isSocket) {
+            if (req.wantsJSON || req.isSocket) {
                 return res.json(templates);
             } else {
                 return res.view('template/index',
