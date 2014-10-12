@@ -6,21 +6,46 @@
         <h1><%= typeof cardEditing == 'undefined' ? "New Card" : "Editing: " + cardEditing.name %></h1>
     </div>
 
-    <input class="name-input" type="text" placeholder="Name"
-           value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+</div>
 
-    <!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Name</label>
+    </div>
+    <div class="small-7 columns">
+        <input class="name-input" type="text" placeholder="Name"
+               value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
-    <% if(typeof cardEditing == 'undefined') { %>
-    <label>
-        Template
+<!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+
+<% if(typeof cardEditing == 'undefined') { %>
+
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Template</label>
+    </div>
+    <div class="small-7 columns">
         <select class="template-select">
             <option value="noneselected">Choose a template</option>
         </select>
-    </label>
-    <% } %>
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
-    <div style="clear: both; height:0"></div>
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Category</label>
+    </div>
+    <div class="small-7 columns">
+        <select class="category-select">
+            <option value="noneselected">Choose a category</option>
+        </select>
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
     <iframe class="glass-preview" id="card-preview"></iframe>
 
