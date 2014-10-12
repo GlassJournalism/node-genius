@@ -45,7 +45,7 @@ module.exports.routes = {
     },
 
     'get /template/create': {
-        view: 'template/create'
+        view: 'template/create_edit'
     },
 
     'post /template/create': 'TemplateController.create'
