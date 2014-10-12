@@ -17,7 +17,7 @@
 
 <div style="clear: both; height:0"></div>
 
-<iframe class=" glass-preview" id="card-preview"></iframe>
+<iframe class="glass-preview" id="card-preview"></iframe>
 
 <div class="variables-container"></div>
 
@@ -31,7 +31,8 @@
 <script type="text/javascript">
     window.onload = function () {
 
-        var previewTemplate = '';
+        var previewTemplate = function () {
+        };
 
         $('.save-button').on('click', function saveClick() {
             var url = '/card/create';
@@ -40,28 +41,46 @@
             <% } %>
             $.post(url, {
                 name: $('.name-input').val(),
-                handlebarsTemplate: editor.getValue()
+                templateId: $('.template-select').val(),
+                variables: getVariables()
             }, function success(data) {
                 var id = data.id;
                 window.location.href = '/card/edit/' + id;
             });
         });
 
-        var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value"></label></div>');
+        var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value" name="{{name}}"></label></div>');
 
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
-                previewTemplate = template.handlebarsTemplate;
+                previewTemplate = Handlebars.compile(template.handlebarsTemplate);
                 var variables = template.handlebarsTemplate.match(/{{(.*?)}}/g);
                 $('.variables-container').html('');
                 if (variables) {
                     for (var i = 0; i < variables.length; i++) {
                         variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
-                        $('.variables-container').append(variableRowTemplate({name: variables[i]}))
+                        $('.variables-container')
+                                .append(variableRowTemplate({name: variables[i]}))
                                 .append('<div style="clear: both; height: 0"></div>');
                     }
                 }
             });
         });
+
+        function updatePreview() {
+            $('#card-preview').contents().find('html').html('')
+                    .append('<link rel="stylesheet" href="/styles/glass-preview.css"/>')
+                    .append(previewTemplate(getVariables()))
+        }
+
+        function getVariables() {
+            var variables = {};
+            $('.variables-container').find('input').each(function (index, variable) {
+                variables[$(variable).attr('name')] = $(variable).val();
+            });
+            return variables;
+        }
+
+        $(document).on('keyup change', '.variable-value', updatePreview);
     }
 </script>
