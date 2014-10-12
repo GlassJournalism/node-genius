@@ -1,35 +1,42 @@
 <link rel="stylesheet" href="/styles/card-create.css">
 
-<input class="name-input" type="text" placeholder="Name"
-       value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+<div class="row">
 
-<!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+    <div class="small-12 columns">
+        <h1>New Card</h1>
+    </div>
 
-<% if(typeof cardEditing == 'undefined') { %>
-<label>
-    Template
-    <select class="template-select">
-        <option value="noneselected">Choose a template</option>
-    </select>
-</label>
-<% } %>
+    <input class="name-input" type="text" placeholder="Name"
+           value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
 
-<div style="clear: both; height:0"></div>
+    <!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
 
-<iframe class="glass-preview" id="card-preview"></iframe>
+    <% if(typeof cardEditing == 'undefined') { %>
+    <label>
+        Template
+        <select class="template-select">
+            <option value="noneselected">Choose a template</option>
+        </select>
+    </label>
+    <% } %>
 
-<div class="variables-container"></div>
+    <div style="clear: both; height:0"></div>
 
-<div style="clear: both; height:0"></div>
+    <iframe class="glass-preview" id="card-preview"></iframe>
 
-<button class="save-button">Save</button>
+    <div class="variables-container"></div>
+
+</div>
+
+<div class="row">
+    <button class="save-button">Save</button>
+</div>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
 
 <script type="text/javascript">
-    window.onload = function () {
-
+    $(document).ready(function () {
         var previewTemplate = function () {
         };
 
@@ -100,10 +107,11 @@
         $(document).on('keyup change', '.variable-value', updatePreview);
 
         socket.get('/template/', function (templates) {
+            console.log('hello');
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
             });
         })
-    }
+    });
 </script>

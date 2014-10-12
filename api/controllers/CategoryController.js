@@ -16,7 +16,7 @@ module.exports = {
         });
     },
 
-    add: function (req, res) {
+    addCategory: function (req, res) {
         Category.find(function (err) {
             return res.view('category/add');
         });
