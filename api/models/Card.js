@@ -11,12 +11,15 @@ module.exports = {
     attributes: {
 
         name: 'string',
-        templateId: 'string',
         variables: 'json',
         triggerWords: 'array',
 
         category: {
             model: 'category'
+        },
+
+        template: {
+            model: 'template'
         }
 
     }
