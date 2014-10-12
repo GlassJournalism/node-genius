@@ -1,0 +1,20 @@
+<div id="container">
+    <% for(var i = 0; i < photos.length; i++){ %>
+    <div class="photo">
+        <div class="panel">
+            <img class="grid-image" src="<%= photos[i].imageUrl %>">
+        </div>
+    </div>
+    <% } %>
+</div>
+
+<script src="/js/masonry.pkgd.min.js"></script>
+
+<script>
+    var container = document.querySelector('#container');
+    var msnry = new Masonry(container, {
+// options
+        columnWidth: 300,
+        itemSelector: '.photo'
+    });
+</script>

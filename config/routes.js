@@ -41,7 +41,7 @@ module.exports.routes = {
     },
 
     '/photo/upload': {
-        view: '/photo/upload'
+        view: 'photo/upload'
     },
 
     'get /template/create': {
