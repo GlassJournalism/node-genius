@@ -9,10 +9,14 @@ module.exports = {
 
     index: function (req, res) {
         Category.find(function (err, categories) {
-            return res.view('category/index',
-                {
-                    categories: categories
-                });
+            if (req.wantsJSON || req.isSocket) {
+                return res.json(categories);
+            } else {
+                return res.view('category/index',
+                    {
+                        templates: categories
+                    });
+            }
         });
     },
 
@@ -21,6 +25,6 @@ module.exports = {
             return res.view('category/add');
         });
     }
-	
+
 };
 
