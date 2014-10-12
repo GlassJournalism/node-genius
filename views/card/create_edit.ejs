@@ -51,6 +51,7 @@
         var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value" name="{{name}}"></label></div>');
 
         <% if(typeof cardEditing == 'undefined') { %>
+
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
                 previewTemplate = Handlebars.compile(template.handlebarsTemplate);
@@ -66,9 +67,19 @@
                 }
             });
         });
-        <% } else {
 
-        %>
+        <% } else { %>
+        previewTemplate = Handlebars.compile("<%- cardEditing.template.handlebarsTemplate %>");
+        var variables = "<%- cardEditing.template.handlebarsTemplate %>".match(/{{(.*?)}}/g);
+        $('.variables-container').html('');
+        if (variables) {
+            for (var i = 0; i < variables.length; i++) {
+                variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
+                $('.variables-container')
+                        .append(variableRowTemplate({name: variables[i]}))
+                        .append('<div style="clear: both; height: 0"></div>');
+            }
+        }
 
         <% } %>
 
@@ -92,7 +103,7 @@
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
-            })
+            });
         })
     }
 </script>
