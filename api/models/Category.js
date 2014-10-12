@@ -1,19 +1,22 @@
 /**
-* Category.js
-*
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
-* @docs        :: http://sailsjs.org/#!documentation/models
-*/
+ * Category.js
+ *
+ * @description :: TODO: You might write a short summary of how this model works and what it represents here.
+ * @docs        :: http://sailsjs.org/#!documentation/models
+ */
 
 module.exports = {
 
-  attributes: {
-    name: 'string',
+    attributes: {
+        name: {
+            type: 'string',
+            unique: true
+        },
 
-    cards:{
-        collection: 'card',
-        via: 'category'
+        cards: {
+            collection: 'card',
+            via: 'category'
+        }
     }
-  }
 };
 

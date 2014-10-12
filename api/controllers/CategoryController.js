@@ -14,6 +14,12 @@ module.exports = {
                     categories: categories
                 });
         });
+    },
+
+    add: function (req, res) {
+        Category.find(function (err) {
+            return res.view('category/add');
+        });
     }
 	
 };

@@ -1,5 +1,40 @@
-<% for(var i = 0; i < categories.length; i++){ %>
-<div class="panel">
-    <h1><%= categories[i].name %></h1>
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Categories</h1>
+    </div>
+    <% for(var i = 0; i < categories.length; i++){ %>
+    <div class="small-6 columns">
+        <div class="panel">
+            <div class="row">
+                <div class="small-9 columns">
+                    <h2><%= categories[i].name %></h2>
+                </div>
+                <div class="small-3 columns">
+                    <button class="button small alert delete-button" id="<%= categories[i].id %>">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <div class="small-12 columns">
+        <a class="button" href="/category/add">New</a>
+    </div>
 </div>
-<% } %>
+
+<script>
+    window.onload = function () {
+        $(".delete-button").on('click', function deleteClick() {
+            var url = '/category/' + $(this).prop('id');
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        });
+    }
+
+</script>
+
