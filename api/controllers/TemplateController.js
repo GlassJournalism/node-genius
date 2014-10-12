@@ -43,6 +43,14 @@ module.exports = {
         });
     },
 
+    edit: function (req, res) {
+        Template.findOne({id: req.params.id}).exec(function (err, template) {
+            return res.view('template/create_edit', {
+                templateEditing: template
+            });
+        });
+    },
+
 
     /**
      * Overrides for the settings in `config/controllers.js`

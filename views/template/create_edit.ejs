@@ -1,14 +1,15 @@
 <link rel="stylesheet" href="/styles/template-create.css">
 
-<input class="name-input" type="text" placeholder="Name"/>
+<input class="name-input" type="text" placeholder="Name"
+       value="<%= (typeof templateEditing != 'undefined') ? templateEditing.name : '' %>">
 
-<iframe class="glass-preview" id="template-preview"></iframe>
+<iframe class=" glass-preview" id="template-preview"></iframe>
 <div class="html-editor" id="editor"></div>
 
 <div style="clear: both; height:0"></div>
 
 <button class="save-button">Save</button>
-<button class="button alert clear-button">Clear</button>
+<button class="button alert clear-button"><%= (typeof templateEditing != 'undefined') ? "Delete" : "Clear" %></button>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
@@ -41,14 +42,36 @@
             $('#template-preview').contents().find('html').append(template(placeholders));
         });
 
+        <% if(typeof templateEditing != 'undefined') { %>
+        editor.setValue("<%- templateEditing.handlebarsTemplate %>");
+        <% } %>
+
         $('.save-button').on('click', function saveClick() {
-            $.post('/template/create', {
+            var url = '/template/create';
+            <% if(typeof templateEditing != 'undefined') { %>
+            url = '/template/update/<%- templateEditing.id %>';
+            <% } %>
+            $.post(url, {
                 name: $('.name-input').val(),
                 handlebarsTemplate: editor.getValue()
             }, function success(data) {
                 var id = data.id;
                 window.location.href = '/template/edit/' + id;
             });
+        });
+
+        $('.clear-button').on('click', function saveClick() {
+            <% if(typeof templateEditing != 'undefined') { %>
+            var url = '/template/<%- templateEditing.id %>';
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function success() {
+                    window.location.href = '/template/create'
+                }
+            });
+            <% } %>
+
         });
     }
 </script>
