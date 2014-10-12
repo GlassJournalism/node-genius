@@ -21,7 +21,7 @@ var async = require('async');
 module.exports = {
 
     index: function (req, res) {
-        Card.find(function (err, cards) {
+        Card.find().populate('template').exec(function (err, cards) {
             return res.view('card/index',
                 {
                     cards: cards
@@ -30,7 +30,8 @@ module.exports = {
     },
 
     preview: function (req, res) {
-        Card.findOne({id: req.params.id}).exec(function (err, card) {
+        Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
+            console.log(card);
             if (err) {
                 res.status(500);
                 return;
@@ -44,7 +45,8 @@ module.exports = {
     },
 
     edit: function (req, res) {
-        Card.findOne({id: req.params.id}, function (err, card) {
+        Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
+            console.log(card);
             return res.view('card/create_edit', {
                 cardEditing: card
             });
@@ -60,7 +62,7 @@ module.exports = {
      */
     find: function (req, res) {
         if (req.params.id) {
-            Card.findOne({id: req.params.id}, function (err, card) {
+            Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
                 return res.json(card);
             });
         } else {
@@ -130,11 +132,5 @@ module.exports = {
 };
 
 function compileCard(card, callback) {
-    Template.findOne({id: card.templateId}).exec(function (err, template) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        callback(null, handlebars.compile(template.handlebarsTemplate)(card.variables));
-    });
+    callback(null, handlebars.compile(card.template.handlebarsTemplate)(card.variables));
 }
