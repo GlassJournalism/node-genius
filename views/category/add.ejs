@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="small-6 columns">
+        <h1>New Category</h1>
+        <input class="category-name-input" type="text" placeholder="Name">
+        <button class="save-button disabled">Save</button>
+
+    </div>
+</div>
+
+
+<script>
+    window.onload = function () {
+        $(".category-name-input").on('keyup keypress blur change', function enableSave() {
+            if ($(".category-name-input").val().length > 0) {
+                $(".save-button").removeClass('disabled');
+
+
+            } else {
+                $(".save-button").addClass('disabled');
+            }
+        });
+
+        $('.save-button').on('click', function saveClick() {
+            console.log('click');
+            var url = '/category/create';
+
+            $.post(url, {
+                name: $('.category-name-input').val()
+            }, function success(data) {
+                window.location.href = '/category/'
+            });
+        });
+    }
+
+</script>
