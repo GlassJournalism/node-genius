@@ -20,6 +20,15 @@ var async = require('async');
 
 module.exports = {
 
+    index: function (req, res) {
+        Card.find(function (err, cards) {
+            return res.view('card/index',
+                {
+                    cards: cards
+                });
+        });
+    },
+
     preview: function (req, res) {
         Card.findOne({id: req.params.id}).exec(function (err, card) {
             if (err) {
