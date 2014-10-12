@@ -36,8 +36,7 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
 
 <script type="text/javascript">
-    window.onload = function () {
-
+    $(document).ready(function () {
         var previewTemplate = function () {
         };
 
@@ -97,10 +96,11 @@
         $(document).on('keyup change', '.variable-value', updatePreview);
 
         socket.get('/template/', function (templates) {
+            console.log('hello');
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
             })
         })
-    }
+    });
 </script>
