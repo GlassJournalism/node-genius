@@ -54,9 +54,7 @@ module.exports.routes = {
         view: 'card/create_edit'
     },
     
-    'get /category/add': 'CategoryController.addCategory',
-
-    'get /card/create': 'CardController.createPage'
+    'get /category/add': 'CategoryController.addCategory'
 
     /*
      // But what if you want your home page to display
