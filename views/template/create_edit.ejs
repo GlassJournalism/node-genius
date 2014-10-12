@@ -38,11 +38,14 @@
                 });
             }
 
-            console.log(template(placeholders));
+            try {
+                $('#template-preview').contents().find('html')
+                        .html('')
+                        .append('<link rel="stylesheet" href="/styles/glass-preview.css"/>')
+                        .append(template(placeholders));
+            } catch (e) {
 
-            $('#template-preview').contents().find('html').html('');
-            $('#template-preview').contents().find('html').append('<link rel="stylesheet" href="/styles/glass-preview.css"/>');
-            $('#template-preview').contents().find('html').append(template(placeholders));
+            }
         });
 
         <% if(typeof templateEditing != 'undefined') { %>
