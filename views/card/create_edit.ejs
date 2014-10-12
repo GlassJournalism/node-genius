@@ -3,7 +3,7 @@
 <div class="row">
 
     <div class="small-12 columns">
-        <h1>New Card</h1>
+        <h1><%= typeof cardEditing == 'undefined' ? "New Card" : "Editing: " + cardEditing.name %></h1>
     </div>
 
     <input class="name-input" type="text" placeholder="Name"
@@ -55,7 +55,7 @@
             });
         });
 
-        var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value" name="{{name}}"></label></div>');
+        var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value" name="{{name}}" value="{{default}}"></label></div>');
 
         <% if(typeof cardEditing == 'undefined') { %>
 
@@ -76,17 +76,23 @@
         });
 
         <% } else { %>
+
         previewTemplate = Handlebars.compile("<%- cardEditing.template.handlebarsTemplate %>");
-        var variables = "<%- cardEditing.template.handlebarsTemplate %>".match(/{{(.*?)}}/g);
+
         $('.variables-container').html('');
-        if (variables) {
-            for (var i = 0; i < variables.length; i++) {
-                variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
-                $('.variables-container')
-                        .append(variableRowTemplate({name: variables[i]}))
-                        .append('<div style="clear: both; height: 0"></div>');
+
+        <% for(var key in cardEditing.variables) {
+            if(cardEditing.variables.hasOwnProperty(key)) {
+                var value = cardEditing.variables[key];
+        %>
+        $('.variables-container')
+                .append(variableRowTemplate({name: '<%- key %>', 'default': '<%- value %>'}))
+                .append('<div style="clear: both; height: 0"></div>');
+        <%
             }
-        }
+        }%>
+
+        updatePreview();
 
         <% } %>
 
