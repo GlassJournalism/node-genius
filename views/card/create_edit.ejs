@@ -6,25 +6,54 @@
         <h1>New Card</h1>
     </div>
 
-    <input class="name-input" type="text" placeholder="Name"
-           value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+</div>
 
-    <!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Name</label>
+    </div>
+    <div class="small-7 columns">
+        <input class="name-input" type="text" placeholder="Name"
+               value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
-    <% if(typeof cardEditing == 'undefined') { %>
-    <label>
-        Template
+<!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+
+<% if(typeof cardEditing == 'undefined') { %>
+
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Template</label>
+    </div>
+    <div class="small-7 columns">
         <select class="template-select">
             <option value="noneselected">Choose a template</option>
         </select>
-    </label>
-    <% } %>
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
-    <div style="clear: both; height:0"></div>
+<div class="row">
+    <div class="small-1 columns">
+        <label class="inline">Category</label>
+    </div>
+    <div class="small-7 columns">
+        <select class="category-select">
+            <option value="noneselected">Choose a category</option>
+        </select>
+    </div>
+    <div class="small-4 columns"></div>
+</div>
 
-    <iframe class="glass-preview" id="card-preview"></iframe>
+<% } %>
 
-    <div class="variables-container"></div>
+<div class="row">
+
+<iframe class="glass-preview" id="card-preview"></iframe>
+
+<div class="variables-container"></div>
 
 </div>
 
@@ -96,10 +125,17 @@
         $(document).on('keyup change', '.variable-value', updatePreview);
 
         socket.get('/template/', function (templates) {
-            console.log('hello');
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
+            })
+        });
+
+        socket.get('/category/', function (categories) {
+            var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
+            categories.forEach(function (category) {
+                console.log(category);
+                $('.category-select').append(optionTemplate({id: category.id, name: category.name}));
             })
         })
     });
