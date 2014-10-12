@@ -50,6 +50,8 @@ module.exports.routes = {
 
     'post /template/create': 'TemplateController.create',
 
+    'get /category/add': 'CategoryController.addCategory',
+
     'get /card/create': 'CardController.createPage'
 
     /*
