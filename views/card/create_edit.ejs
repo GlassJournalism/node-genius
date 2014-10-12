@@ -5,12 +5,14 @@
 
 <!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
 
+<% if(typeof cardEditing == 'undefined') { %>
 <label>
     Template
     <select class="template-select">
         <option value="noneselected">Choose a template</option>
     </select>
 </label>
+<% } %>
 
 <div style="clear: both; height:0"></div>
 
@@ -48,6 +50,7 @@
 
         var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value" name="{{name}}"></label></div>');
 
+        <% if(typeof cardEditing == 'undefined') { %>
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
                 previewTemplate = Handlebars.compile(template.handlebarsTemplate);
@@ -63,6 +66,7 @@
                 }
             });
         });
+        <% } %>
 
         function updatePreview() {
             $('#card-preview').contents().find('html').html('')
