@@ -8,7 +8,7 @@
 <div style="clear: both; height:0"></div>
 
 <button class="save-button">Save</button>
-<button class="button alert">Clear</button>
+<button class="button alert clear-button">Clear</button>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
@@ -39,6 +39,16 @@
             $('#template-preview').contents().find('html').html('');
             $('#template-preview').contents().find('html').append('<link rel="stylesheet" href="/styles/glass-preview.css"/>');
             $('#template-preview').contents().find('html').append(template(placeholders));
+        });
+
+        $('.save-button').on('click', function saveClick() {
+            $.post('/template/create', {
+                name: $('.name-input').val(),
+                handlebarsTemplate: editor.getValue()
+            }, function success(data) {
+                var id = data.id;
+                window.location.href = '/template/edit/' + id;
+            });
         });
     }
 </script>
