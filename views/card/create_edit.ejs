@@ -19,8 +19,6 @@
     <div class="small-4 columns"></div>
 </div>
 
-<!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
-
 <% if(typeof cardEditing == 'undefined') { %>
 
 <div class="row">
@@ -49,9 +47,11 @@
 
 <% } %>
 
-<iframe class="glass-preview" id="card-preview"></iframe>
+<div class="row">
 
-<div class="variables-container"></div>
+    <iframe class="glass-preview" id="card-preview"></iframe>
+
+    <div class="variables-container"></div>
 
 </div>
 
@@ -75,6 +75,7 @@
             $.post(url, {
                 name: $('.name-input').val(),
                 template: $('.template-select').val(),
+                category: $('.category-select').val(),
                 variables: getVariables()
             }, function success(data) {
                 var id = data.id;
@@ -145,6 +146,15 @@
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
             });
-        })
+        });
+
+        socket.get('/category/', function (categories) {
+            var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
+            categories.forEach(function (category) {
+                $('.category-select').append(optionTemplate({id: category.id, name: category.name}));
+            })
+        });
     });
 </script>
+
+
