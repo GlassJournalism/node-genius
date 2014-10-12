@@ -1,3 +1,7 @@
+<div class="small-12 columns">
+    <h1>Photos</h1>
+</div>
+
 <div id="container">
     <% for(var i = 0; i < photos.length; i++){ %>
     <div class="photo">
@@ -11,10 +15,12 @@
 <script src="/js/masonry.pkgd.min.js"></script>
 
 <script>
-    var container = document.querySelector('#container');
-    var msnry = new Masonry(container, {
+    window.onload = function () {
+        var container = document.querySelector('#container');
+        var msnry = new Masonry(container, {
 // options
-        columnWidth: 300,
-        itemSelector: '.photo'
-    });
+            columnWidth: 300,
+            itemSelector: '.photo'
+        });
+    }
 </script>
