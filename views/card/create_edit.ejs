@@ -40,7 +40,7 @@
             <% } %>
             $.post(url, {
                 name: $('.name-input').val(),
-                templateId: $('.template-select').val(),
+                template: $('.template-select').val(),
                 variables: getVariables()
             }, function success(data) {
                 var id = data.id;
@@ -66,6 +66,10 @@
                 }
             });
         });
+        <% } else {
+
+        %>
+
         <% } %>
 
         function updatePreview() {
