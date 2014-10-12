@@ -43,9 +43,24 @@ module.exports = {
         });
     },
 
+    edit: function (req, res) {
+        Card.findOne({id: req.params.id}, function (err, card) {
+            return res.view('card/create_edit', {
+                cardEditing: card
+            });
+        });
+    },
+
+    /**
+     * Find the most relevant card or get a card by ID.
+     * Given a list of words, find all the card matches for each word, join all of the results
+     * and find which card has the most total matches for all of the provided words.
+     * @param req
+     * @param res
+     */
     find: function (req, res) {
         if (req.params.id) {
-            Card.find({id: req.params.id}, function (err, card) {
+            Card.findOne({id: req.params.id}, function (err, card) {
                 return res.json(card);
             });
         } else {
@@ -103,12 +118,6 @@ module.exports = {
                 });
             });
         }
-    },
-
-    createPage: function (req, res) {
-        Template.find(function (err, templates) {
-            return res.view('card/create_edit', {templates: templates});
-        });
     },
 
     /**
