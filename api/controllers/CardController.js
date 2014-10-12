@@ -90,6 +90,12 @@ module.exports = {
         });
     },
 
+    createPage: function (req, res) {
+        Template.find(function (err, templates) {
+            return res.view('card/create_edit', {templates: templates});
+        });
+    },
+
     /**
      * Overrides for the settings in `config/controllers.js`
      * (specific to CardController)

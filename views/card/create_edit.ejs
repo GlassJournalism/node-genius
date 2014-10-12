@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="/styles/card-create.css">
+
+<input class="name-input" type="text" placeholder="Name"
+       value="<%= (typeof cardEditing != 'undefined') ? cardEditing.name : '' %>">
+
+<!--<span style="float: left; margin-top: 15px; margin-left: 10px;">Template: </span>-->
+
+<label>
+    Template
+    <select class="template-select">
+        <% templates.forEach(function(template) { %>
+        <option value="noneselected">Choose a template</option>
+        <option value="<%= template.id %>"><%= template.name %></option>
+        <% }); %>
+    </select>
+</label>
+
+<div style="clear: both; height:0"></div>
+
+<iframe class=" glass-preview" id="card-preview"></iframe>
+
+<div class="variables-container"></div>
+
+<div style="clear: both; height:0"></div>
+
+<button class="save-button">Save</button>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+
+        var previewTemplate = '';
+
+        $('.save-button').on('click', function saveClick() {
+            var url = '/card/create';
+            <% if(typeof cardEditing != 'undefined') { %>
+            url = '/card/update/<%- cardEditing.id %>';
+            <% } %>
+            $.post(url, {
+                name: $('.name-input').val(),
+                handlebarsTemplate: editor.getValue()
+            }, function success(data) {
+                var id = data.id;
+                window.location.href = '/card/edit/' + id;
+            });
+        });
+
+        var variableRowTemplate = Handlebars.compile('<label>{{name}}<input type="text" class="variable-value" placeholder="value"></label></div>');
+
+        $('.template-select').on('change', function () {
+            socket.get('/template/' + $('.template-select').val(), function (template) {
+                previewTemplate = template.handlebarsTemplate;
+                var variables = template.handlebarsTemplate.match(/{{(.*?)}}/g);
+                $('.variables-container').html('');
+                if (variables) {
+                    for (var i = 0; i < variables.length; i++) {
+                        variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
+                        $('.variables-container').append(variableRowTemplate({name: variables[i]}))
+                                .append('<div style="clear: both; height: 0"></div>');
+                    }
+                }
+            });
+        });
+    }
+</script>
