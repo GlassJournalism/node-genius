@@ -1,1 +1,30 @@
-Hello
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+
+
+<div class="row">
+    <div class="small-6 columns">
+        <h1>Upload Photo</h1>
+        <input id="imageUrl" type="filepicker" data-fp-apikey="AGtevGIzSpOUnSnd2MVEoz" data-fp-mimetypes="image/*"
+               data-fp-container="modal" onchange="$('#imagebox').append('<img src='+$('#imageUrl').val()+'>')">
+        <button class="save-button">Save</button>
+    </div>
+    <div class="small-6 columns" id="imagebox"></div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.save-button').on('click', function saveClick() {
+            console.log('click');
+            var url = '/photo/create';
+
+            $.post(url, {
+                imageUrl: $("#imageUrl").val()
+            }, function success(data) {
+                window.location.href = '/photo/'
+            });
+        });
+    });
+
+</script>
