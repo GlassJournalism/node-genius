@@ -1,16 +1,20 @@
 <div class="small-12 columns">
     <h1>Photos</h1>
+    <a class="button" href="/photo/upload">Upload</a>
 </div>
 
-<div id="container">
-    <% for(var i = 0; i < photos.length; i++){ %>
-    <div class="photo">
-        <div class="panel">
-            <img class="grid-image" src="<%= photos[i].imageUrl %>">
+<div class="small-12 columns">
+    <div id="container">
+        <% for(var i = 0; i < photos.length; i++){ %>
+        <div class="photo">
+            <div class="panel">
+                <img class="grid-image" src="<%= photos[i].imageUrl %>">
+            </div>
         </div>
+        <% } %>
     </div>
-    <% } %>
 </div>
+
 
 <script src="/js/masonry.pkgd.min.js"></script>
 
