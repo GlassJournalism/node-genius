@@ -9,7 +9,8 @@
 
 
 <script>
-    window.onload = function () {
+
+    $(document).ready(function () {
         $(".category-name-input").on('keyup keypress blur change', function enableSave() {
             if ($(".category-name-input").val().length > 0) {
                 $(".save-button").removeClass('disabled');
@@ -30,6 +31,6 @@
                 window.location.href = '/category/'
             });
         });
-    }
+    });
 
 </script>
