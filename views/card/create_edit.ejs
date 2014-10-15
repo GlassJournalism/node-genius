@@ -106,7 +106,7 @@
 
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
-                previewTemplate = Handlebars.compile(template.handlebarsTemplate.replace(/"/g, '\\"'));
+                previewTemplate = Handlebars.compile(template.handlebarsTemplate.replace(/"/g, '\\"').replace(/[\r\n]/g, ''));
                 var variables = template.handlebarsTemplate.match(/{{(.*?)}}/g);
                 $('.variables-container').html('');
                 if (variables) {
@@ -122,7 +122,7 @@
 
         <% } else { %>
 
-        previewTemplate = Handlebars.compile("<%- cardEditing.template.handlebarsTemplate.replace(/"/g, '\\"') %>");
+        previewTemplate = Handlebars.compile("<%- cardEditing.template.handlebarsTemplate.replace(/"/g, '\\"').replace(/[\r\n]/g, '') %>");
 
         $('.variables-container').html('');
 
