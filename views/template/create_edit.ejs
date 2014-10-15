@@ -49,7 +49,7 @@
         });
 
         <% if(typeof templateEditing != 'undefined') { %>
-        editor.setValue("<%- templateEditing.handlebarsTemplate %>");
+        editor.setValue("<%= templateEditing.handlebarsTemplate %>");
         <% } %>
 
         $('.save-button').on('click', function saveClick() {
