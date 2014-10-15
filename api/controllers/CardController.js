@@ -22,6 +22,9 @@ module.exports = {
 
     index: function (req, res) {
         Card.find().populate('template').exec(function (err, cards) {
+            if (req.wantsJSON || req.isSocket) {
+                return res.json(cards);
+            }
             return res.view('card/index',
                 {
                     cards: cards
