@@ -14,3 +14,17 @@
         <% } %>
     </div>
 </div>
+
+
+<script src="/js/masonry.pkgd.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var container = document.querySelector('#container');
+        var msnry = new Masonry(container, {
+// options
+            columnWidth: 300,
+            itemSelector: '.photo'
+        });
+    });
+</script>

@@ -2,20 +2,15 @@
     <h1>Templates</h1>
 </div>
 
-<div style="margin-left: 15px">
-    <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
-        <% for(var i = 0; i < templates.length; i++){ %>
-        <li style="min-width: 380px;">
-            <div class="panel">
-                <div><h1><a href="/template/edit/<%- templates[i].id %>"
-                            style="color: #000000"><%= templates[i].name %></a>
-                    </h1></div>
-                <iframe style="width: 320px; height: 180px;" class="glass-preview"
-                        src="/template/preview/<%= templates[i].id %>"></iframe>
-            </div>
-        </li>
-        <% } %>
-    </ul>
+<div id="container" class="container clearfix">
+    <% for(var i = 0; i < templates.length; i++){ %>
+    <div class="small-12 medium-12 large-9 xlarge-6 columns card-item">
+        <div class="panel">
+            <div><h1><a href="/template/edit/<%- templates[i].id %>" style="color: #000000"><%= templates[i].name %></a></h1></div>
+            <iframe class="glass-preview" src="/template/preview/<%= templates[i].id %>"></iframe>
+        </div>
+    </div>
+    <% } %>
 </div>
 
 <div class="small-12 columns">
