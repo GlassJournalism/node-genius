@@ -1,6 +1,6 @@
 module.exports.connections = {
-    productionMongoHQ: {
-        adapter: 'sails-mongo',
-        url: process.env.MONGOHQ_URL
-    }
+  productionHerokuPostgres: {
+    adapter: 'sails-postgresql',
+    url: process.env.DATABASE_URL
+  }
 };

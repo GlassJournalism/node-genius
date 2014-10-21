@@ -1,5 +1,5 @@
 module.exports = {
     models: {
-        connection: 'productionMongoHQ'
+        connection: 'productionHerokuPostgres'
     }
-};
+}
