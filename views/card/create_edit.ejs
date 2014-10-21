@@ -137,6 +137,18 @@
             }
         }%>
 
+        <% for(var word in cardEditing.triggerWords) {
+        %>
+        console.log("hi");
+        console.log(<% cardEditing.triggerWords %>);
+        $("#tags").addTag(<% word %>);
+
+
+        <%
+
+        }%>
+
+
         updatePreview();
 
         <% } %>
@@ -158,7 +170,6 @@
         $(document).on('keyup change', '.variable-value', updatePreview);
 
         socket.get('/template/', function (templates) {
-            console.log('hello');
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             templates.forEach(function (template) {
                 $('.template-select').append(optionTemplate({id: template.id, name: template.name}));
