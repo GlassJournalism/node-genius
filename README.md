@@ -1,5 +1,9 @@
 # Glass Genius CMS
 
+## Accessing Production
+
+Access Glass Genius CMS at http://glacial-ridge-6503.herokuapp.com/
+
 ## Running Locally
 
 * Install Node.js from http://nodejs.org/download/
