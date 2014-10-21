@@ -1,3 +1,5 @@
-module.exports.models = {
-  connection: 'productionHerokuPostgres'
+module.exports = {
+    models: {
+        connection: 'productionHerokuPostgres'
+    }
 }
