@@ -21,3 +21,19 @@ https://developers.google.com/glass/tools-downloads/playground
 * Use the built-in HTML editor and preview window to design the card exactly how it will appear on the user's Glass
 * To delineate fields to be populated by data, use the template convention of **{{item}}** where *item* will be replaced by content.  
 * Fields can be placed anywhere - inside text areas, URLs that represent videos or images, or any other content that should be populated from the Card model into this Template.
+
+### Sample Card ###
+
+````
+<article class="photo">
+  <img src="{{backgroundImage}}" width="100%" height="100%">
+  <div class="overlay-gradient-tall-dark"/>
+  <section>
+    <img src="{{avatarImage}}" class="left"/>
+    <p class="text-auto-size">{{contentText}}</p>
+  <section>
+</article>
+
+````
+
+When a card is created with this Template, the available fields for content will be **backgroundImage**, **avatarImage**, and **contentText**.
