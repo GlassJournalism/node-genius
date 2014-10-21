@@ -169,7 +169,11 @@
             var optionTemplate = Handlebars.compile('<option value="{{id}}">{{name}}</option>');
             categories.forEach(function (category) {
                 $('.category-select').append(optionTemplate({id: category.id, name: category.name}));
-            })
+            });
+
+            <% if(typeof cardEditing != 'undefined') { %>
+                $('.category-select').val('<%- cardEditing.category.id %>');
+            <% } %>
         });
     });
 </script>
