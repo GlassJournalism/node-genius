@@ -8,7 +8,7 @@
 * From the repo directory, run ````npm install````
 * To start the server locatlly, run ```npm start``` and browse to [http://localhost:1337](http://localhost:1337)
 * To use Sails to refresh the browser automatically when Views are updated, run ````sails lift````
-* 
+
 
 ## Card Templates
 
