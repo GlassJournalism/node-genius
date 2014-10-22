@@ -182,7 +182,7 @@
                 $('.category-select').append(optionTemplate({id: category.id, name: category.name}));
             });
 
-            <% if(typeof cardEditing != 'undefined') { %>
+            <% if(typeof cardEditing != 'undefined' && cardEditing.category) { %>
                 $('.category-select').val('<%- cardEditing.category.id %>');
             <% } %>
         });
