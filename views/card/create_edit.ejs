@@ -135,19 +135,14 @@
                 .append('<div style="clear: both; height: 0"></div>');
         <%
             }
-        }%>
+        } %>
 
-        <% for(var word in cardEditing.triggerWords) {
-        %>
+        <% for(var word in cardEditing.triggerWords) { %>
         console.log("hi");
         console.log(<% cardEditing.triggerWords %>);
         $("#tags").addTag(<% word %>);
 
-
-        <%
-
-        }%>
-
+        <% } %>
 
         updatePreview();
 
@@ -183,7 +178,7 @@
             });
 
             <% if(typeof cardEditing != 'undefined' && cardEditing.category) { %>
-                $('.category-select').val('<%- cardEditing.category.id %>');
+            $('.category-select').val('<%- cardEditing.category.id %>');
             <% } %>
         });
     });
