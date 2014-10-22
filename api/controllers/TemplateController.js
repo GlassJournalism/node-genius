@@ -39,7 +39,10 @@ module.exports = {
 
     preview: function (req, res) {
         Template.findOne({id: req.params.id}).exec(function (err, template) {
-            console.log(template);
+            console.log('template previewing: ' + template);
+            if (!template) {
+                return res.json({err: 'couldn\'t get template'});
+            }
             return res.view('template/preview', {
                 rendered: template.handlebarsTemplate,
                 layout: 'cardpreview'
