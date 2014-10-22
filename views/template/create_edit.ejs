@@ -49,7 +49,7 @@
         });
 
         <% if(typeof templateEditing != 'undefined') { %>
-        editor.setValue("<%- templateEditing.handlebarsTemplate.replace(/"/g, '\\"') %>");
+        editor.setValue("<%- templateEditing.handlebarsTemplate.replace(/"/g, '\\"').replace(/\n/g, '\\n') %>");
         <% } %>
 
         $('.save-button').on('click', function saveClick() {
