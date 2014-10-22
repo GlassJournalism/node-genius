@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/styles/template-create.css">
 
 <div class="small-12 columns">
-    <h1>New Template</h1>
+    <h1><%= (typeof templateEditing != 'undefined') ? 'Editing Template' : 'New Template' %></h1>
 </div>
 
 <input class="name-input" type="text" placeholder="Name"
