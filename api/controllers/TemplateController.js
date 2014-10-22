@@ -43,8 +43,10 @@ module.exports = {
             if (!template) {
                 return res.json({err: 'couldn\'t get template'});
             }
+            var scale = req.param('scale') ? req.param('scale') : '1.0';
             return res.view('template/preview', {
                 rendered: template.handlebarsTemplate,
+                scale: req.param('scale') ? req.param('scale') : '1.0',
                 layout: 'cardpreview'
             })
         });
