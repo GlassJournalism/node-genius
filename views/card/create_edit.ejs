@@ -106,7 +106,7 @@
 
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
-                previewTemplate = Handlebars.compile(template.handlebarsTemplate.replace(/"/g, '\\"').replace(/[\r\n]/g, ''));
+                previewTemplate = Handlebars.compile(template.handlebarsTemplate);
                 var variables = template.handlebarsTemplate.match(/{{(.*?)}}/g);
                 $('.variables-container').html('');
                 if (variables) {
