@@ -11,7 +11,8 @@ module.exports = {
     attributes: {
 
         name: 'string',
-        handlebarsTemplate: 'string'
+        handlebarsTemplate: 'string',
+        defaultVars: 'json'
 
     }
 
