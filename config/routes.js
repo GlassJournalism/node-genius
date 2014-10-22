@@ -36,6 +36,10 @@ module.exports.routes = {
         view: 'home/index'
     },
 
+    '/mediabucket' : {
+        view: 'mediabucket'
+    },
+
     '/speechDemo': {
         view: 'speechDemo'
     },
