@@ -36,7 +36,7 @@ module.exports = {
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
             console.log(card);
             if (err) {
-                res.status(500);
+                res.status(404);
                 return;
             }
             compileCard(card, function (err, html) {
