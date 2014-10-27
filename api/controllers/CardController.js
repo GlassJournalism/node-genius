@@ -33,6 +33,10 @@ module.exports = {
     },
 
     preview: function (req, res) {
+        if(!req.params.id) {
+            res.status(404);
+            return res.end();
+        }
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
             console.log(card);
             if (err) {
