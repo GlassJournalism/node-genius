@@ -38,7 +38,6 @@ module.exports = {
             return res.end();
         }
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
-            console.log(card);
             if (err) {
                 res.status(404);
                 return;
@@ -53,7 +52,6 @@ module.exports = {
 
     edit: function (req, res) {
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
-            console.log(card);
             return res.view('card/create_edit', {
                 cardEditing: card
             });
