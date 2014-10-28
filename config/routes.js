@@ -40,6 +40,10 @@ module.exports.routes = {
         view: 'mediabucket'
     },
 
+    '/dashboard' : {
+        view: 'dashboard'
+    },
+
     '/speechDemo': {
         view: 'speechDemo'
     },
