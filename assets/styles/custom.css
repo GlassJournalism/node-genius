@@ -1,0 +1,15 @@
+/* .container not the same as #container (in home.less) */
+.container {
+}
+
+.box {
+	overflow: hidden;
+	width: 128px;
+	height: 128px;
+	border: 1px dashed #eee;
+}
+
+li.box span.label {
+	position: absolute;
+	z-index: 1;
+}
