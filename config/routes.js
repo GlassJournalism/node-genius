@@ -26,6 +26,8 @@
  *
  */
 
+var passport = require('passport');
+
 module.exports.routes = {
 
     // By default, your root route (aka home page) points to a view
@@ -36,7 +38,7 @@ module.exports.routes = {
         view: 'home/index'
     },
 
-    '/mediabucket' : {
+    '/mediabucket': {
         view: 'mediabucket'
     },
 
@@ -57,66 +59,24 @@ module.exports.routes = {
     'get /card/create': {
         view: 'card/create_edit'
     },
-    
-    'get /category/add': 'CategoryController.addCategory'
 
-    /*
-     // But what if you want your home page to display
-     // a signup form located at `views/user/signup.ejs`?
-     '/': {
-     view: 'user/signup'
-     }
+    'get /category/add': 'CategoryController.addCategory',
 
+    // Redirect the user to Google for authentication.  When complete, Google
+    // will redirect the user back to the application at
+    //     /auth/google/return
+    'get /auth/google': passport.authenticate('google'),
 
-     // Let's say you're building an email client, like Gmail
-     // You might want your home route to serve an interface using custom logic.
-     // In this scenario, you have a custom controller `MessageController`
-     // with an `inbox` action.
-     '/': 'MessageController.inbox'
+    // Google will redirect the user to this URL after authentication.  Finish
+    // the process by verifying the assertion.  If valid, the user will be
+    // logged in.  Otherwise, authentication has failed.
+    'get /auth/google/return': passport.authenticate('google', { successRedirect: '/loginRedirect',
+        failureRedirect: '/auth/google' }),
 
+    'get /loginRedirect': function (req, res) {
+        res.redirect(req.session.returnTo || '/');
+    }
 
-     // Alternatively, you can use the more verbose syntax:
-     '/': {
-     controller: 'MessageController',
-     action: 'inbox'
-     }
-
-
-     // If you decided to call your action `index` instead of `inbox`,
-     // since the `index` action is the default, you can shortcut even further to:
-     '/': 'MessageController'
-
-
-     // Up until now, we haven't specified a specific HTTP method/verb
-     // The routes above will apply to ALL verbs!
-     // If you want to set up a route only for one in particular
-     // (GET, POST, PUT, DELETE, etc.), just specify the verb before the path.
-     // For example, if you have a `UserController` with a `signup` action,
-     // and somewhere else, you're serving a signup form looks like:
-     //
-     //		<form action="/signup">
-     //			<input name="username" type="text"/>
-     //			<input name="password" type="password"/>
-     //			<input type="submit"/>
-     //		</form>
-
-     // You would want to define the following route to handle your form:
-     'post /signup': 'UserController.signup'
-
-
-     // What about the ever-popular "vanity URLs" aka URL slugs?
-     // (you might remember doing this with `mod_rewrite` in Apache)
-     //
-     // This is where you want to set up root-relative dynamic routes like:
-     // http://yourwebsite.com/twinkletoez
-     //
-     // NOTE:
-     // You'll still want to allow requests through to the static assets,
-     // so we need to set up this route to ignore URLs that have a trailing ".":
-     // (e.g. your javascript, CSS, and image files)
-     'get /*(^.*)': 'UserController.profile'
-
-     */
 };
 
 
