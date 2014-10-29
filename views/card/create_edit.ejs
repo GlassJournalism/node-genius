@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/styles/card-create.css">
 <link rel="stylesheet" href="/styles/jquery.tagsinput.css"/>
-
+<br>
 <div class="row">
 
     <div class="small-12 columns">
@@ -69,6 +69,9 @@
 
 <div class="row">
     <button class="save-button">Save</button>
+    <% if(typeof cardEditing != 'undefined') { %>
+    <button class="alert delete-button">Delete</button>
+    <% } %>
 </div>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
@@ -82,6 +85,16 @@
 
         var previewTemplate = function () {
         };
+
+        <% if(typeof cardEditing != 'undefined') { %>
+        $('.delete-button').on('click', function deleteClick() {
+            console.log("delete click");
+            var url = '/card/destroy/<%- cardEditing.id %>';
+            $.post(url, function success(data) {
+                window.location.href = '/card/';
+            });
+        });
+        <% } %>
 
         $('.save-button').on('click', function saveClick() {
             var url = '/card/create';
@@ -137,11 +150,10 @@
             }
         } %>
 
-        <% for(var word in cardEditing.triggerWords) { %>
-        console.log("hi");
-        console.log(<% cardEditing.triggerWords %>);
-        $("#tags").addTag(<% word %>);
-
+        <% for(var word in cardEditing.triggerWords) {
+        var tag = cardEditing.triggerWords[word];
+          %>
+        $('#tags').addTag('<%= tag %>');
         <% } %>
 
         updatePreview();
@@ -181,7 +193,8 @@
             $('.category-select').val('<%- cardEditing.category.id %>');
             <% } %>
         });
-    });
+    })
+    ;
 </script>
 
 
