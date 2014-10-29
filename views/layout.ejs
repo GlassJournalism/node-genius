@@ -43,34 +43,33 @@
 
 <body>
 
-
 <div class="off-canvas-wrap" data-offcanvas>
     <div class="inner-wrap">
-        <nav class="tab-bar">
-            <section class="left-small">
-                <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
-            </section>
+        <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="#">Glass Genius</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
 
-            <section class="middle tab-bar-section">
-                <h1 class="title">Glacial Ridge</h1>
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="has-dropdown">
+                        <a href="#">Navigation</a>
+                        <ul class="dropdown">
+                            <li><a href="/category">Categories</a></li>
+                            <li><a href="/card">Cards</a></li>
+                            <li><a href="/template">Templates</a></li>
+                            <li><a href="/photo">Photos</a></li>
+                            <li><a href="/mediabucket">Media Bucket</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </section>
-
         </nav>
-
-        <aside class="left-off-canvas-menu">
-            <ul class="off-canvas-list">
-                <li><label>Account</label></li>
-                <li><a href="#">My Account</a></li>
-            </ul>
-            <ul class="off-canvas-list">
-                <li><label>Content</label></li>
-                <li><a href="/category">Categories</a></li>
-                <li><a href="/card">Cards</a></li>
-                <li><a href="/template">Templates</a></li>
-                <li><a href="/photo">Photos</a></li>
-                <li><a href="/mediabucket">Media Bucket</a></li>
-            </ul>
-        </aside>
 
         <section class="main-section">
             <%- body %>
