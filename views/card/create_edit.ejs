@@ -150,11 +150,10 @@
             }
         } %>
 
-        <% for(var word in cardEditing.triggerWords) { %>
-        console.log("hi");
-        console.log(<% cardEditing.triggerWords %>);
-        $("#tags").addTag(<% word %>);
-
+        <% for(var word in cardEditing.triggerWords) {
+        var tag = cardEditing.triggerWords[word];
+          %>
+        $('#tags').addTag('<%= tag %>');
         <% } %>
 
         updatePreview();
@@ -194,7 +193,8 @@
             $('.category-select').val('<%- cardEditing.category.id %>');
             <% } %>
         });
-    });
+    })
+    ;
 </script>
 
 
