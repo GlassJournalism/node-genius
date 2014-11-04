@@ -16,7 +16,7 @@ module.exports.bootstrap = function (cb) {
     passport.use(new GoogleStrategy({
             clientID: '738583448835-4nm3p36amf1k1qq2gb6p0k87o8hit5uo.apps.googleusercontent.com',
             clientSecret: '89LUjNAecgO0tvgzmAaA-a6g',
-            callbackURL: 'http://localhost:1337/auth/google/return',
+            callbackURL: process.env.GOOGLE_REDIRECT || 'http://localhost:1337/auth/google/return',
             scope: 'https://www.googleapis.com/auth/glass.timeline https://www.googleapis.com/auth/userinfo.profile email'
         },
         function (accessToken, refreshToken, profile, done) {
