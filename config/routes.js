@@ -42,7 +42,7 @@ module.exports.routes = {
         view: 'mediabucket'
     },
 
-    '/dashboard' : {
+    '/dashboard': {
         view: 'dashboard'
     },
 
@@ -63,6 +63,8 @@ module.exports.routes = {
     'get /card/create': {
         view: 'card/create_edit'
     },
+
+    'get /card/find': 'CardController.find',
 
     'get /category/add': 'CategoryController.addCategory',
 
