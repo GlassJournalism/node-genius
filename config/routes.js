@@ -42,7 +42,7 @@ module.exports.routes = {
         view: 'mediabucket'
     },
 
-    '/dashboard' : {
+    '/dashboard': {
         view: 'dashboard'
     },
 
@@ -64,10 +64,12 @@ module.exports.routes = {
         view: 'card/create_edit'
     },
 
+    'get /card/find': 'CardController.find',
+
     'get /category/add': 'CategoryController.addCategory',
 
     'get /category/edit': {
-        view: 'card/create_edit'
+        view: 'category/edit'
     },
 
     // Redirect the user to Google for authentication.  When complete, Google
