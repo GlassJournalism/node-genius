@@ -73,7 +73,7 @@ module.exports = {
             });
         } else {
             var matches = [];
-            async.each(req.param('words').split(','), function (word, callback) {
+            async.each(req.param('words').split(' '), function (word, callback) {
                 console.log("word: " + word);
 
                 Card.find().populate('template').exec(function (err, cards) {
@@ -84,8 +84,8 @@ module.exports = {
                                 console.log("found: " + word);
                                 matches.push(card);
                             }
+                            callback();
                         });
-//                        callback();
                     });
                     callback(err);
                 });
