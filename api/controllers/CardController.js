@@ -33,7 +33,7 @@ module.exports = {
     },
 
     preview: function (req, res) {
-        if(!req.params.id) {
+        if (!req.params.id) {
             res.status(404);
             return res.end();
         }
@@ -66,28 +66,39 @@ module.exports = {
      * @param res
      */
     find: function (req, res) {
+        console.log("params: " + req.param('words'));
         if (req.params.id) {
             Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
                 return res.json(card);
             });
         } else {
             var matches = [];
-            async.each(req.param('words').split(','), function (word, callback) {
-                Card.find().populate('template').where({triggerWords: word}).exec(function (err, cards) {
+            async.each(req.param('words').split(' '), function (word, callback) {
+                console.log("word: " + word);
+
+                Card.find().populate('template').exec(function (err, cards) {
                     async.each(cards, function (card, callback) {
-                        matches.push(card);
-                        callback();
+                        console.log('triggers: ' + card.triggerWords);
+                        async.each(card.triggerWords, function (trigger, callback) {
+                            if (word.toLowerCase() == trigger.toLowerCase()) {
+                                console.log("found: " + word);
+                                matches.push(card);
+                            }
+                            callback();
+                        });
                     });
                     callback(err);
                 });
             }, function (err) {
                 if (err) {
-                    res.status(500);
+                    console.log("error");
+                    res.status(500).send('Error finding card');
                     return;
                 }
 
                 if (matches.length == 0) {
-                    res.status(404);
+                    console.log("0 matches");
+                    res.status(404).send('No cards found');
                     return;
                 }
 
@@ -115,14 +126,16 @@ module.exports = {
                     return 0;
                 });
                 var bestCard = matchesWithOccurrences[0].card;
+                console.log("bestCard " + bestCard.name);
+                return res.json(bestCard);
 
-                compileCard(bestCard, function (err, html) {
-                    if (err) {
-                        res.status(500);
-                        return res.end();
-                    }
-                    return res.send(html);
-                });
+//                compileCard(bestCard, function (err, html) {
+//                    if (err) {
+//                        res.status(500);
+//                        return res.end();
+//                    }
+//                    return res.send(html);
+//                });
             });
         }
     },
