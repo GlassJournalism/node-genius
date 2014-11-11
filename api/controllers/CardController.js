@@ -131,8 +131,12 @@ module.exports = {
 
             async.map(cards, function (card, callback) {
                 callback(null, card.triggerWords);
-            }, function (err, keywords) {
-                return res.json(_.flatten(keywords));
+            }, function (err, triggers) {
+                async.reject(triggers, function (trigger, callback) {
+                    callback(trigger.length == 0);
+                }, function (triggers) {
+                    return res.json(_.flatten(triggers));
+                });
             });
         })
     },
