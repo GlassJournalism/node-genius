@@ -18,6 +18,7 @@
 var handlebars = require('handlebars');
 var async = require('async');
 var _ = require('underscore');
+var webshot = require('webshot');
 
 module.exports = {
 
@@ -52,7 +53,17 @@ module.exports = {
     },
 
     render: function (req, res) {
-        return preview(req, res);
+        var options = {
+            screenSize: {
+                width: 640, height: 360
+            }, shotSize: {
+                width: 640, height: 360
+            },
+            streamType: 'jpg'
+        };
+        webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
+            renderStream.pipe(res);
+        });
     },
 
     edit: function (req, res) {
