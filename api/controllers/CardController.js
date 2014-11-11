@@ -27,12 +27,30 @@ module.exports = {
     index: function (req, res) {
         Card.find().populate('template').exec(function (err, cards) {
             if (req.wantsJSON || req.isSocket) {
-                return res.json(cards);
-            }
-            return res.view('card/index',
-                {
-                    cards: cards
+                //if the requester only wants certain fields, filter out to only use those
+                var fields = req.param('fields');
+                if (fields) {
+                    fields = fields.split(',');
+                }
+                async.map(cards, function (card, callback) {
+                    if (fields) {
+                        var cardFields = {};
+                        _.forEach(fields, function (field) {
+                            cardFields[field] = card[field];
+                        });
+                        callback(null, cardFields);
+                    } else {
+                        callback(null, card);
+                    }
+                }, function (err, cards) {
+                    return res.json(cards);
                 });
+            } else {
+                return res.view('card/index',
+                    {
+                        cards: cards
+                    });
+            }
         });
     },
 
