@@ -144,7 +144,7 @@
                 var value = cardEditing.variables[key];
         %>
         $('.variables-container')
-                .append(variableRowTemplate({name: '<%- key.replace(/'/g, '\'') %>', 'default': '<%- value %>'}))
+                .append(variableRowTemplate({name: '<%- key.replace(/'/g, '\\\'') %>', 'default': '<%- value %>'}))
                 .append('<div style="clear: both; height: 0"></div>');
         <%
             }
