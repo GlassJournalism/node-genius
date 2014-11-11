@@ -77,7 +77,7 @@ module.exports = {
                 async.map(cards, function (card, callback) {
                     //count the number of matches for each card
                     async.reduce(card.triggerWords, 0, function (memo, item, callback) {
-                        if (transcription.indexOf(item.toLowerCase()) != -1)
+                        if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1)
                             callback(null, memo + 1);
                         else
                             callback(null, memo);
