@@ -17,6 +17,7 @@
 
 var handlebars = require('handlebars');
 var async = require('async');
+var _ = require('underscore');
 
 module.exports = {
 
@@ -66,78 +67,40 @@ module.exports = {
      * @param res
      */
     find: function (req, res) {
-        console.log("params: " + req.param('words'));
         if (req.params.id) {
             Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
                 return res.json(card);
             });
         } else {
-            var matches = [];
-            async.each(req.param('words').split(' '), function (word, callback) {
-                console.log("word: " + word);
+            var transcription = req.param('text');
+            Card.find({}, function (err, card) {
 
-                Card.find().populate('template').exec(function (err, cards) {
-                    async.each(cards, function (card, callback) {
-                        console.log('triggers: ' + card.triggerWords);
-                        async.each(card.triggerWords, function (trigger, callback) {
-                            if (word.toLowerCase() == trigger.toLowerCase()) {
-                                console.log("found: " + word);
-                                matches.push(card);
-                            }
-                            callback();
-                        });
-                    });
-                    callback(err);
-                });
-            }, function (err) {
-                if (err) {
-                    console.log("error");
-                    res.status(500).send('Error finding card');
-                    return;
-                }
-
-                if (matches.length == 0) {
-                    console.log("0 matches");
-                    res.status(404).send('No cards found');
-                    return;
-                }
-
-                var matchesWithOccurrences = new Array(matches.length);
-                for (var i = 0; i < matches.length; i++) {
-                    var card = matches[i];
-
-                    var found = false;
-                    for (var j = 0; j < matchesWithOccurrences.length; j++) {
-                        if (matchesWithOccurrences[j] && matchesWithOccurrences[j].card === card) {
-                            found = true;
-                            matchesWithOccurrences[j].occurrences++;
-                        }
-                    }
-                    if (!found) {
-                        matchesWithOccurrences.push({card: card, occurrences: 1});
-                    }
-                }
-
-                matchesWithOccurrences.sort(function (a, b) {
-                    if (a.occurrences < b.occurrences)
-                        return -1;
-                    if (a.occurrences > b.occurrences)
-                        return 1;
-                    return 0;
-                });
-                var bestCard = matchesWithOccurrences[0].card;
-                console.log("bestCard " + bestCard.name);
-                return res.json(bestCard);
-
-//                compileCard(bestCard, function (err, html) {
-//                    if (err) {
-//                        res.status(500);
-//                        return res.end();
-//                    }
-//                    return res.send(html);
-//                });
             });
         }
+    },
+
+    /**
+     * Get a list of all the trigger (words/phrases)
+     * @param req
+     * @param res
+     */
+    triggers: function (req, res) {
+        Card.find({}, function (err, cards) {
+            if (err) {
+                res.status(500);
+                return res.end();
+            }
+            if (cards.length == 0) {
+                res.status(404);
+                return res.end();
+            }
+
+            async.map(cards, function (card, callback) {
+                callback(null, card.triggerWords);
+            }, function (err, keywords) {
+                return res.json(_.flatten(keywords));
+            });
+        })
     },
 
     /**
