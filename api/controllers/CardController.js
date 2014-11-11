@@ -53,6 +53,8 @@ module.exports = {
     },
 
     render: function (req, res) {
+        res.set('Cache-Control', 'public, max-age=31536000');
+
         var options = {
             screenSize: {
                 width: 640, height: 360
