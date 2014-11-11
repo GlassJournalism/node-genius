@@ -20,6 +20,7 @@ var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
+var crypto = require('crypto');
 
 module.exports = {
 
@@ -54,7 +55,12 @@ module.exports = {
     },
 
     render: function (req, res) {
-        res.set('Cache-Control', 'public, max-age=31536000');
+        //disgusting hack to enable faster response times
+        //the client will set this header if it thinks it has the image cached, so we will just assume that it hasn't changed
+        if (req.get('If-None-Match')) {
+            res.status(304);
+            return res.end();
+        }
 
         var options = {
             screenSize: {
@@ -64,8 +70,30 @@ module.exports = {
             },
             streamType: 'jpg'
         };
+
+        //take a screenshot of the preview page
+        //set the Etag header to be the MD5 of the image to aid in caching the response client-side
         webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-            renderStream.pipe(res);
+            var hash = crypto.createHash('md5');
+            hash.setEncoding('hex');
+            var chunks = [];
+            renderStream.on('data', function (chunk) {
+                hash.write(chunk);
+                chunks.push(chunk);
+            });
+            renderStream.on('end', function () {
+                hash.end();
+                var etag = hash.read();
+                if (req.header('If-None-Match') == etag) {
+                    res.status(304);
+                    return res.end();
+                }
+                res.set('Etag', etag);
+                _.forEach(chunks, function (chunk) {
+                    res.write(chunk);
+                });
+                res.end();
+            });
         });
     },
 
