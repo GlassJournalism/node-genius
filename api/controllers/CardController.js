@@ -155,12 +155,9 @@ module.exports = {
                     });
                 }, function (err, matches) {
                     //sort by the most frequently occurring matches descending
-                    matches = _(matches).chain()
-                        .sortBy(matches, function (match) {
-                            return match.numMatches;
-                        })
-                        .reverse()
-                        .value();
+                    matches = _.sortBy(matches, function (match) {
+                        return match.numMatches;
+                    }).reverse();
 
                     //filter out cards that don't actually have matches
                     async.reject(matches, function (match, callback) {
