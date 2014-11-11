@@ -140,13 +140,17 @@ module.exports = {
             Card.find({}, function (err, cards) {
                 async.map(cards, function (card, callback) {
                     //count the number of matches for each card
-                    async.reduce(card.triggerWords, 0, function (memo, item, callback) {
-                        if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1)
-                            callback(null, memo + 1);
+                    async.reduce(card.triggerWords, {numMatches: 0, matchedTriggers: []}, function (memo, item, callback) {
+                        if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1) {
+                            memo.matchedTriggers.push(item);
+                            memo.numMatches++;
+                            callback(null, memo);
+                        }
                         else
                             callback(null, memo);
                     }, function (err, result) {
-                        card.numMatches = result;
+                        card.numMatches = result.numMatches;
+                        card.matchedTriggers = result.matchedTriggers;
                         callback(null, card);
                     });
                 }, function (err, matches) {
@@ -163,7 +167,7 @@ module.exports = {
                         callback(match.numMatches == 0);
                     }, function (goodMatches) {
                         async.map(goodMatches, function (match, cb) {
-                            cb(null, match.id);
+                            cb(null, {id: match.id, triggers: match.matchedTriggers});
                         }, function (err, answers) {
                             return res.json(answers);
                         });
