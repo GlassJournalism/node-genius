@@ -99,7 +99,7 @@ module.exports = {
                         callback(match.numMatches == 0);
                     }, function (goodMatches) {
                         async.map(goodMatches, function (match, cb) {
-                            cb(null, match.id);
+                            cb(null, match);
                         }, function (err, answers) {
                             return res.json(answers);
                         });
