@@ -72,9 +72,39 @@ module.exports = {
                 return res.json(card);
             });
         } else {
-            var transcription = req.param('text');
-            Card.find({}, function (err, card) {
+            var transcription = req.param('text').toLowerCase();
+            Card.find({}, function (err, cards) {
+                async.map(cards, function (card, callback) {
+                    //count the number of matches for each card
+                    async.reduce(card.triggerWords, 0, function (memo, item, callback) {
+                        if (transcription.indexOf(item.toLowerCase()) != -1)
+                            callback(null, memo + 1);
+                        else
+                            callback(null, memo);
+                    }, function (err, result) {
+                        card.numMatches = result;
+                        callback(null, card);
+                    });
+                }, function (err, matches) {
+                    //sort by the most frequently occurring matches descending
+                    matches = _(matches).chain()
+                        .sortBy(matches, function (match) {
+                            return match.numMatches;
+                        })
+                        .reverse()
+                        .value();
 
+                    //filter out cards that don't actually have matches
+                    async.reject(matches, function (match, callback) {
+                        callback(match.numMatches == 0);
+                    }, function (goodMatches) {
+                        async.map(goodMatches, function (match, cb) {
+                            cb(null, match.id);
+                        }, function (err, answers) {
+                            return res.json(answers);
+                        });
+                    });
+                })
             });
         }
     },
