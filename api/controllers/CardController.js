@@ -164,7 +164,7 @@ module.exports = {
                         callback(match.numMatches == 0);
                     }, function (goodMatches) {
                         async.map(goodMatches, function (match, cb) {
-                            cb(null, {id: match.id, triggers: match.matchedTriggers, matches: match.numMatches});
+                            cb(null, {id: match.id, triggers: match.matchedTriggers});
                         }, function (err, answers) {
                             return res.json(answers);
                         });
