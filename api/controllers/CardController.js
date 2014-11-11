@@ -51,6 +51,10 @@ module.exports = {
         });
     },
 
+    render: function (req, res) {
+        return preview(req, res);
+    },
+
     edit: function (req, res) {
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
             return res.view('card/create_edit', {
