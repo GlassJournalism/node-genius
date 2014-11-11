@@ -45,7 +45,7 @@ module.exports = {
                 return;
             }
             compileCard(card, function (err, html) {
-                res.write('<html><head><link href="http://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" type="text/css"><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
+                res.write('<html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
                 res.write(html + '</body></html>');
                 res.end();
             });
