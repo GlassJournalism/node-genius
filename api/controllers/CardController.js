@@ -103,7 +103,7 @@ module.exports = {
                         callback(match.numMatches == 0);
                     }, function (goodMatches) {
                         async.map(goodMatches, function (match, cb) {
-                            cb(null, match);
+                            cb(null, match.id);
                         }, function (err, answers) {
                             return res.json(answers);
                         });
