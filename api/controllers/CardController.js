@@ -19,6 +19,7 @@ var handlebars = require('handlebars');
 var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
+var hash = require('object-hash');
 
 module.exports = {
 
@@ -149,6 +150,9 @@ module.exports = {
                 async.reject(triggers, function (trigger, callback) {
                     callback(trigger.length == 0);
                 }, function (goodTriggers) {
+                    //set Etag to enable caching
+                    var etag = hash.MD5(goodTriggers);
+                    res.set('Etag', etag);
                     return res.json(_.flatten(goodTriggers));
                 });
             });
