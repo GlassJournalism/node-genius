@@ -74,13 +74,9 @@ module.exports = {
     render: function (req, res) {
         Card.findOne({id: req.params.id}, function (err, card) {
             if (req.get('If-Modified-Since') == card.updatedAt) {
-                console.log('card was cached');
-
                 res.status(304);
                 return res.end();
             }
-
-            console.log('card not cached');
 
             res.set('Last-Modified', card.updatedAt);
 
@@ -124,13 +120,11 @@ module.exports = {
             });
         } else {
             var transcription = req.param('text').toLowerCase();
-            console.log('searching for ' + transcription);
             Card.find({}, function (err, cards) {
                 async.map(cards, function (card, callback) {
                     //count the number of matches for each card
                     async.reduce(card.triggerWords, {numMatches: 0, matchedTriggers: []}, function (memo, item, callback) {
                         if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1) {
-                            console.log('match for: ' + item);
                             memo.matchedTriggers.push(item);
                             memo.numMatches++;
                             callback(null, memo);
