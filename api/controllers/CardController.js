@@ -134,7 +134,7 @@ module.exports = {
                             var distance = natural.JaroWinklerDistance(transcription, item.toLowerCase());
 
                             //completely arbitrary distance threshold TODO: fine tune this
-                            if (distance > 0.5) {
+                            if (distance > 0.75) {
                                 memo.matchedTriggers.push({'trigger': item, 'distance': distance});
                                 memo.numMatches++;
                             }
