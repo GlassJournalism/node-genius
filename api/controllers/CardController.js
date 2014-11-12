@@ -20,7 +20,6 @@ var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
-var crypto = require('crypto');
 
 module.exports = {
 
@@ -91,26 +90,12 @@ module.exports = {
             };
 
             //take a screenshot of the preview page
-            //set the Etag header to be the MD5 of the image to aid in caching the response client-side
             webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-                var hash = crypto.createHash('md5');
-                hash.setEncoding('hex');
-                var chunks = [];
-                renderStream.on('data', function (chunk) {
-                    hash.write(chunk);
-                    chunks.push(chunk);
+                renderStream.on('data', function (data) {
+                    res.write(data);
                 });
+
                 renderStream.on('end', function () {
-                    hash.end();
-                    var etag = hash.read();
-                    if (req.header('If-None-Match') == etag) {
-                        res.status(304);
-                        return res.end();
-                    }
-                    res.set('Etag', etag);
-                    _.forEach(chunks, function (chunk) {
-                        res.write(chunk);
-                    });
                     res.end();
                 });
             });
