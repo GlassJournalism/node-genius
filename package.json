@@ -16,7 +16,8 @@
     "passport-google-oauth": "~0.1.5",
     "underscore": "~1.7.0",
     "webshot": "~0.15.3",
-    "object-hash": "~0.3.0"
+    "object-hash": "~0.3.0",
+    "natural": "~0.1.28"
   },
   "scripts": {
     "start": "node app.js",
