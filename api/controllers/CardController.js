@@ -130,14 +130,14 @@ module.exports = {
                             memo.numMatches++;
                             callback(null, memo);
                         } else {
-                            //didn't find an exact match, let's use natural to find other potential matches
-                            var distance = natural.JaroWinklerDistance(transcription, item.toLowerCase());
-
-                            //completely arbitrary distance threshold TODO: fine tune this
-                            if (distance > 0.75) {
-                                memo.matchedTriggers.push({'trigger': item, 'distance': distance});
-                                memo.numMatches++;
-                            }
+//                            //didn't find an exact match, let's use natural to find other potential matches
+//                            var distance = natural.JaroWinklerDistance(transcription, item.toLowerCase());
+//
+//                            //completely arbitrary distance threshold TODO: fine tune this
+//                            if (distance > 0.75) {
+//                                memo.matchedTriggers.push({'trigger': item, 'distance': distance});
+//                                memo.numMatches++;
+//                            }
 
                             callback(null, memo);
                         }
