@@ -73,44 +73,46 @@ module.exports = {
     },
 
     render: function (req, res) {
-        //disgusting hack to enable faster response times
-        //the client will set this header if it thinks it has the image cached, so we will just assume that it hasn't changed
-        if (req.get('If-None-Match')) {
-            res.status(304);
-            return res.end();
-        }
+        Card.findOne({id: req.params.id}, function (err, card) {
+            if (req.get('If-Modified-Since') == card.updatedAt) {
+                res.status(304);
+                return res.end();
+            }
 
-        var options = {
-            screenSize: {
-                width: 640, height: 360
-            }, shotSize: {
-                width: 640, height: 360
-            },
-            streamType: 'jpg'
-        };
+            res.set('Last-Modified', card.updatedAt);
 
-        //take a screenshot of the preview page
-        //set the Etag header to be the MD5 of the image to aid in caching the response client-side
-        webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-            var hash = crypto.createHash('md5');
-            hash.setEncoding('hex');
-            var chunks = [];
-            renderStream.on('data', function (chunk) {
-                hash.write(chunk);
-                chunks.push(chunk);
-            });
-            renderStream.on('end', function () {
-                hash.end();
-                var etag = hash.read();
-                if (req.header('If-None-Match') == etag) {
-                    res.status(304);
-                    return res.end();
-                }
-                res.set('Etag', etag);
-                _.forEach(chunks, function (chunk) {
-                    res.write(chunk);
+            var options = {
+                screenSize: {
+                    width: 640, height: 360
+                }, shotSize: {
+                    width: 640, height: 360
+                },
+                streamType: 'jpg'
+            };
+
+            //take a screenshot of the preview page
+            //set the Etag header to be the MD5 of the image to aid in caching the response client-side
+            webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
+                var hash = crypto.createHash('md5');
+                hash.setEncoding('hex');
+                var chunks = [];
+                renderStream.on('data', function (chunk) {
+                    hash.write(chunk);
+                    chunks.push(chunk);
                 });
-                res.end();
+                renderStream.on('end', function () {
+                    hash.end();
+                    var etag = hash.read();
+                    if (req.header('If-None-Match') == etag) {
+                        res.status(304);
+                        return res.end();
+                    }
+                    res.set('Etag', etag);
+                    _.forEach(chunks, function (chunk) {
+                        res.write(chunk);
+                    });
+                    res.end();
+                });
             });
         });
     },
