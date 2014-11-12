@@ -89,6 +89,8 @@ module.exports = {
                 streamType: 'jpg'
             };
 
+            res.set('Content-Type', 'image/jpeg');
+
             //take a screenshot of the preview page
             webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
                 renderStream.pipe(res);
