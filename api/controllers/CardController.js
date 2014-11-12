@@ -135,7 +135,7 @@ module.exports = {
 
                             //completely arbitrary distance threshold TODO: fine tune this
                             if (distance > 0.5) {
-                                memo.matchedTriggers.push(item);
+                                memo.matchedTriggers.push({'trigger': item, 'distance': distance});
                                 memo.numMatches++;
                             }
 
