@@ -20,6 +20,7 @@ var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
+var natural = require('natural');
 
 module.exports = {
 
@@ -128,9 +129,18 @@ module.exports = {
                             memo.matchedTriggers.push(item);
                             memo.numMatches++;
                             callback(null, memo);
-                        }
-                        else
+                        } else {
+                            //didn't find an exact match, let's use natural to find other potential matches
+                            var distance = natural.JaroWinklerDistance(transcription, item.toLowerCase());
+
+                            //completely arbitrary distance threshold TODO: fine tune this
+                            if (distance > 0.5) {
+                                memo.matchedTriggers.push(item);
+                                memo.numMatches++;
+                            }
+
                             callback(null, memo);
+                        }
                     }, function (err, result) {
                         card.numMatches = result.numMatches;
                         card.matchedTriggers = result.matchedTriggers;
