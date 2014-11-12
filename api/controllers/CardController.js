@@ -74,9 +74,13 @@ module.exports = {
     render: function (req, res) {
         Card.findOne({id: req.params.id}, function (err, card) {
             if (req.get('If-Modified-Since') == card.updatedAt) {
+                console.log('card was cached');
+
                 res.status(304);
                 return res.end();
             }
+
+            console.log('card not cached');
 
             res.set('Last-Modified', card.updatedAt);
 
