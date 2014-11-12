@@ -91,13 +91,7 @@ module.exports = {
 
             //take a screenshot of the preview page
             webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-                renderStream.on('data', function (data) {
-                    res.write(data);
-                });
-
-                renderStream.on('end', function () {
-                    res.end();
-                });
+                renderStream.pipe(res);
             });
         });
     },
