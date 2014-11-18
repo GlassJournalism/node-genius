@@ -22,6 +22,9 @@ var webshot = require('webshot');
 var hash = require('object-hash');
 var natural = require('natural');
 
+var Mixpanel = require('mixpanel');
+
+
 module.exports = {
 
     index: function (req, res) {
@@ -159,7 +162,19 @@ module.exports = {
                         async.map(goodMatches, function (match, cb) {
                             cb(null, {id: match.id, triggers: match.matchedTriggers});
                         }, function (err, answers) {
-                            return res.json(answers);
+                            async.map(answers, function(answer, callback){
+
+                            }, function(err, keywords){
+
+                            });
+                            mixpanel.track('match', {
+                                distinct_id: req.get('Session-Id'),
+                                text: transcription,
+                                matches: answers
+                            });
+//                            console.log(req.get('Session-Id'));
+
+                            res.json(answers);
                         });
                     });
                 })
