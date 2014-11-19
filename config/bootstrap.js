@@ -9,6 +9,7 @@
  */
 
 module.exports.bootstrap = function (cb) {
+    var AWS = require('aws-sdk');
 
     var passport = require('passport')
         , GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -24,7 +25,7 @@ module.exports.bootstrap = function (cb) {
                 googleId: profile.id,
                 name: profile.displayName,
                 email: profile.emails[0].value
-            }, function(err, user) {
+            }, function (err, user) {
                 done(err, user);
             });
         }

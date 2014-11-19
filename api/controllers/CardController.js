@@ -21,6 +21,8 @@ var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
 var natural = require('natural');
+var AWS = require('aws-sdk');
+var s3Stream = require('s3-upload-stream')(new AWS.S3());
 
 var Mixpanel = require('mixpanel');
 
@@ -57,6 +59,19 @@ module.exports = {
         });
     },
 
+    cacheAll: function (req, res) {
+        Card.find({}, function (err, cards) {
+            _.each(cards, function (card) {
+                cacheCard(req.baseUrl, card.id);
+            });
+        });
+        return res.status(200);
+    },
+
+    render: function (req, res) {
+        return res.redirect(301, 'https://s3-us-west-1.amazonaws.com/glass-genius/' + req.params.id + '.jpg');
+    },
+
     preview: function (req, res) {
         if (!req.params.id) {
             res.status(404);
@@ -73,33 +88,8 @@ module.exports = {
                 res.end();
             });
         });
-    },
 
-    render: function (req, res) {
-        Card.findOne({id: req.params.id}, function (err, card) {
-            if (req.get('If-Modified-Since') == card.updatedAt) {
-                res.status(304);
-                return res.end();
-            }
-
-            res.set('Last-Modified', card.updatedAt);
-
-            var options = {
-                screenSize: {
-                    width: 640, height: 360
-                }, shotSize: {
-                    width: 640, height: 360
-                },
-                streamType: 'jpg'
-            };
-
-            res.set('Content-Type', 'image/jpeg');
-
-            //take a screenshot of the preview page
-            webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-                renderStream.pipe(res);
-            });
-        });
+        cacheCard(req.baseUrl, req.params.id);
     },
 
     edit: function (req, res) {
@@ -229,4 +219,32 @@ module.exports = {
 
 function compileCard(card, callback) {
     callback(null, handlebars.compile(card.template.handlebarsTemplate)(card.variables));
+}
+
+function cacheCard(baseUrl, cardId) {
+    var options = {
+        screenSize: {
+            width: 640, height: 360
+        }, shotSize: {
+            width: 640, height: 360
+        },
+        streamType: 'jpg'
+    };
+
+    //take a screenshot of the preview page
+    webshot(baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
+        var upload = s3Stream.upload({
+            Bucket: 'glass-genius',
+            Key: cardId + '.jpg',
+            ACL: 'public-read',
+            StorageClass: 'REDUCED_REDUNDANCY',
+            ContentType: 'image/jpeg'
+        });
+
+        upload.on('error', function (error) {
+            console.log(error);
+        });
+
+        renderStream.pipe(upload);
+    });
 }
