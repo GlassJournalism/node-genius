@@ -163,17 +163,21 @@ module.exports = {
                         async.map(goodMatches, function (match, cb) {
                             cb(null, {id: match.id, triggers: match.matchedTriggers});
                         }, function (err, answers) {
-                            async.map(answers, function(answer, callback){
-
-                            }, function(err, keywords){
-
+                            async.map(answers, function (answer, callback) {
+                                Card.findOne({id: answer.id}, function (err, card) {
+                                    if (err) {
+                                        callback(err);
+                                        return;
+                                    }
+                                    callback(null, {triggers: answer.triggers, name: card.name});
+                                })
+                            }, function (err, formatMatches) {
+                                mixpanel.track('match', {
+                                    distinct_id: req.get('Session-Id'),
+                                    text: transcription,
+                                    matches: formatMatches
+                                });
                             });
-                            mixpanel.track('match', {
-                                distinct_id: req.get('Session-Id'),
-                                text: transcription,
-                                matches: answers
-                            });
-//                            console.log(req.get('Session-Id'));
 
                             res.json(answers);
                         });
