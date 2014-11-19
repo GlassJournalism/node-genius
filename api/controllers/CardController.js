@@ -61,11 +61,14 @@ module.exports = {
 
     cacheAll: function (req, res) {
         Card.find({}, function (err, cards) {
-            _.each(cards, function (card) {
+            async.eachSeries(cards, function (card, callback) {
                 cacheCard(req.baseUrl, card.id);
+                setTimeout(callback, 3000);
+            }, function (err) {
+                res.status(200);
+                return res.end();
             });
         });
-        return res.status(200);
     },
 
     render: function (req, res) {
