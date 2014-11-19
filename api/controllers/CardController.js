@@ -73,7 +73,36 @@ module.exports = {
     },
 
     render: function (req, res) {
-        return res.redirect(301, 'https://s3-us-west-1.amazonaws.com/glass-genius/' + req.params.id + '.jpg');
+        Card.findOne({id: req.params.id}, function (err, card) {
+            if (req.get('If-Modified-Since') == card.updatedAt) {
+                res.status(304);
+                return res.end();
+            }
+
+            res.set('Last-Modified', card.updatedAt);
+
+            var options = {
+                screenSize: {
+                    width: 640, height: 360
+                }, shotSize: {
+                    width: 640, height: 360
+                },
+                streamType: 'jpg'
+            };
+
+            res.set('Content-Type', 'image/jpeg');
+
+            //take a screenshot of the preview page
+            webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
+                renderStream.pipe(res);
+            });
+        });
+    },
+
+    cache: function (req, res) {
+        cacheCard(req.baseUrl, req.params.id);
+        res.status(200);
+        return res.end();
     },
 
     preview: function (req, res) {
@@ -93,7 +122,7 @@ module.exports = {
             });
         });
 
-        cacheCard(req.baseUrl, req.params.id);
+//        cacheCard(req.baseUrl, req.params.id);
     },
 
     edit: function (req, res) {
@@ -219,7 +248,8 @@ module.exports = {
     _config: {
     }
 
-};
+}
+;
 
 function compileCard(card, callback) {
     callback(null, handlebars.compile(card.template.handlebarsTemplate)(card.variables));
