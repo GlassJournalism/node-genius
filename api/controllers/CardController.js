@@ -63,7 +63,8 @@ module.exports = {
         Card.find({}, function (err, cards) {
             async.eachSeries(cards, function (card, callback) {
                 cacheCard(req.baseUrl, card.id);
-                setTimeout(callback, 3000);
+                console.log('caching ' + card.id);
+                setTimeout(callback, 5000);
             }, function (err) {
                 res.status(200);
                 return res.end();
