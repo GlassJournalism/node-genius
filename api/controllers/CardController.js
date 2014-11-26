@@ -94,7 +94,8 @@ module.exports = {
             }, shotSize: {
                 width: 640, height: 360
             },
-            streamType: 'jpg'
+            streamType: 'jpg',
+            renderDelay: 1000
         };
         //take a screenshot of the preview page
         webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
