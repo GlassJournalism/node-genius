@@ -87,6 +87,13 @@ module.exports = {
         return res.redirect(301, 'https://s3-us-west-1.amazonaws.com/glass-genius/' + req.params.id + '.jpg');
     },
 
+    renderRaw: function (req, res) {
+        //take a screenshot of the preview page
+        webshot(baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
+            renderStream.pipe(res);
+        });
+    },
+
     cache: function (req, res) {
         cacheCard(req.baseUrl, req.params.id);
         res.status(200);
