@@ -89,7 +89,7 @@ module.exports = {
 
     renderRaw: function (req, res) {
         //take a screenshot of the preview page
-        webshot(baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
+        webshot(req.baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
             renderStream.pipe(res);
         });
     },
