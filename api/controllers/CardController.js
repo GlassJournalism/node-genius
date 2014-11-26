@@ -70,13 +70,16 @@ module.exports = {
     },
 
     update: function (req, res) {
-        Card.update({id: req.body.id}.req.body, function (err, card) {
+        Card.update({id: req.params.id}, req.body, function (err, card) {
+            card = card[0];
             if (err) {
                 res.status(404);
                 return res.end();
             }
             cacheCard(req.baseUrl, req.params.id);
-            return res.end();
+
+            res.status(200);
+            return res.json(card);
         });
     },
 
@@ -262,5 +265,7 @@ function cacheCard(baseUrl, cardId) {
         });
 
         renderStream.pipe(upload);
+
+        console.log('caching card ' + cardId);
     });
 }
