@@ -88,6 +88,14 @@ module.exports = {
     },
 
     renderRaw: function (req, res) {
+        var options = {
+            screenSize: {
+                width: 640, height: 360
+            }, shotSize: {
+                width: 640, height: 360
+            },
+            streamType: 'jpg'
+        };
         //take a screenshot of the preview page
         webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
             renderStream.pipe(res);
