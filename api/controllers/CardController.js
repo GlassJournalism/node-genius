@@ -20,7 +20,6 @@ var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
-var natural = require('natural');
 var AWS = require('aws-sdk');
 var s3Stream = require('s3-upload-stream')(new AWS.S3());
 
@@ -135,19 +134,8 @@ module.exports = {
                         if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1) {
                             memo.matchedTriggers.push(item);
                             memo.numMatches++;
-                            callback(null, memo);
-                        } else {
-//                            //didn't find an exact match, let's use natural to find other potential matches
-//                            var distance = natural.JaroWinklerDistance(transcription, item.toLowerCase());
-//
-//                            //completely arbitrary distance threshold TODO: fine tune this
-//                            if (distance > 0.75) {
-//                                memo.matchedTriggers.push({'trigger': item, 'distance': distance});
-//                                memo.numMatches++;
-//                            }
-
-                            callback(null, memo);
                         }
+                        callback(null, memo); //want to do this either way
                     }, function (err, result) {
                         card.numMatches = result.numMatches;
                         card.matchedTriggers = result.matchedTriggers;
