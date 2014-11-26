@@ -58,16 +58,25 @@ module.exports = {
         });
     },
 
-    cacheAll: function (req, res) {
-        Card.find({}, function (err, cards) {
-            async.eachSeries(cards, function (card, callback) {
-                cacheCard(req.baseUrl, card.id);
-                console.log('caching ' + card.id);
-                setTimeout(callback, 5000);
-            }, function (err) {
-                res.status(200);
+    create: function (req, res) {
+        Card.create(req.body).exec(function (err, card) {
+            if (err) {
+                res.status(500);
                 return res.end();
-            });
+            }
+            cacheCard(req.baseUrl, card.id);
+            return res.end();
+        });
+    },
+
+    update: function (req, res) {
+        Card.update({id: req.body.id}.req.body, function (err, card) {
+            if (err) {
+                res.status(404);
+                return res.end();
+            }
+            cacheCard(req.baseUrl, req.params.id);
+            return res.end();
         });
     },
 
