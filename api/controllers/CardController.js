@@ -90,12 +90,16 @@ module.exports = {
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
             if (err) {
                 res.status(404);
-                return;
+                return res.end();
             }
             compileCard(card, function (err, html) {
+                if (err) {
+                    res.status(500);
+                    return res.end();
+                }
                 res.write('<html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
                 res.write(html + '</body></html>');
-                res.end();
+                return res.end();
             });
         });
 
@@ -229,6 +233,10 @@ module.exports = {
 ;
 
 function compileCard(card, callback) {
+    //not sure why this is necessary but sometimes some of these are undefined...
+    if (!card || !card.template || !card.template.handlebarsTemplate) {
+        callback(err, null);
+    }
     callback(null, handlebars.compile(card.template.handlebarsTemplate)(card.variables));
 }
 
