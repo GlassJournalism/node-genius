@@ -20,7 +20,11 @@ var async = require('async');
 var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
-var crypto = require('crypto');
+var AWS = require('aws-sdk');
+var s3Stream = require('s3-upload-stream')(new AWS.S3());
+
+var Mixpanel = require('mixpanel');
+
 
 module.exports = {
 
@@ -54,6 +58,41 @@ module.exports = {
         });
     },
 
+    create: function (req, res) {
+        Card.create(req.body).exec(function (err, card) {
+            if (err) {
+                res.status(500);
+                return res.end();
+            }
+            cacheCard(req.baseUrl, card.id);
+            return res.end();
+        });
+    },
+
+    update: function (req, res) {
+        Card.update({id: req.params.id}, req.body, function (err, card) {
+            card = card[0];
+            if (err) {
+                res.status(404);
+                return res.end();
+            }
+            cacheCard(req.baseUrl, req.params.id);
+
+            res.status(200);
+            return res.json(card);
+        });
+    },
+
+    render: function (req, res) {
+        return res.redirect(301, 'https://s3-us-west-1.amazonaws.com/glass-genius/' + req.params.id + '.jpg');
+    },
+
+    cache: function (req, res) {
+        cacheCard(req.baseUrl, req.params.id);
+        res.status(200);
+        return res.end();
+    },
+
     preview: function (req, res) {
         if (!req.params.id) {
             res.status(404);
@@ -62,57 +101,20 @@ module.exports = {
         Card.findOne({id: req.params.id}).populate('template').exec(function (err, card) {
             if (err) {
                 res.status(404);
-                return;
+                return res.end();
             }
             compileCard(card, function (err, html) {
-                res.write('<html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
-                res.write(html + '</body></html>');
-                res.end();
-            });
-        });
-    },
-
-    render: function (req, res) {
-        //disgusting hack to enable faster response times
-        //the client will set this header if it thinks it has the image cached, so we will just assume that it hasn't changed
-        if (req.get('If-None-Match')) {
-            res.status(304);
-            return res.end();
-        }
-
-        var options = {
-            screenSize: {
-                width: 640, height: 360
-            }, shotSize: {
-                width: 640, height: 360
-            },
-            streamType: 'jpg'
-        };
-
-        //take a screenshot of the preview page
-        //set the Etag header to be the MD5 of the image to aid in caching the response client-side
-        webshot(req.baseUrl + '/card/preview/' + req.params.id, options, function (err, renderStream) {
-            var hash = crypto.createHash('md5');
-            hash.setEncoding('hex');
-            var chunks = [];
-            renderStream.on('data', function (chunk) {
-                hash.write(chunk);
-                chunks.push(chunk);
-            });
-            renderStream.on('end', function () {
-                hash.end();
-                var etag = hash.read();
-                if (req.header('If-None-Match') == etag) {
-                    res.status(304);
+                if (err) {
+                    res.status(500);
                     return res.end();
                 }
-                res.set('Etag', etag);
-                _.forEach(chunks, function (chunk) {
-                    res.write(chunk);
-                });
-                res.end();
+                res.write('<html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
+                res.write(html + '</body></html>');
+                return res.end();
             });
         });
+
+//        cacheCard(req.baseUrl, req.params.id);
     },
 
     edit: function (req, res) {
@@ -144,10 +146,8 @@ module.exports = {
                         if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1) {
                             memo.matchedTriggers.push(item);
                             memo.numMatches++;
-                            callback(null, memo);
                         }
-                        else
-                            callback(null, memo);
+                        callback(null, memo); //want to do this either way
                     }, function (err, result) {
                         card.numMatches = result.numMatches;
                         card.matchedTriggers = result.matchedTriggers;
@@ -166,7 +166,23 @@ module.exports = {
                         async.map(goodMatches, function (match, cb) {
                             cb(null, {id: match.id, triggers: match.matchedTriggers, name: match.name});
                         }, function (err, answers) {
-                            return res.json(answers);
+                            async.map(answers, function (answer, callback) {
+                                Card.findOne({id: answer.id}, function (err, card) {
+                                    if (err) {
+                                        callback(err);
+                                        return;
+                                    }
+                                    callback(null, {triggers: answer.triggers, name: card.name});
+                                })
+                            }, function (err, formatMatches) {
+                                mixpanel.track('match', {
+                                    distinct_id: req.get('Session-Id'),
+                                    text: transcription,
+                                    matches: formatMatches
+                                });
+                            });
+
+                            res.json(answers);
                         });
                     });
                 })
@@ -213,8 +229,43 @@ module.exports = {
     _config: {
     }
 
-};
+}
+;
 
 function compileCard(card, callback) {
+    //not sure why this is necessary but sometimes some of these are undefined...
+    if (!card || !card.template || !card.template.handlebarsTemplate) {
+        callback(err, null);
+    }
     callback(null, handlebars.compile(card.template.handlebarsTemplate)(card.variables));
+}
+
+function cacheCard(baseUrl, cardId) {
+    var options = {
+        screenSize: {
+            width: 640, height: 360
+        }, shotSize: {
+            width: 640, height: 360
+        },
+        streamType: 'jpg'
+    };
+
+    //take a screenshot of the preview page
+    webshot(baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
+        var upload = s3Stream.upload({
+            Bucket: 'glass-genius',
+            Key: cardId + '.jpg',
+            ACL: 'public-read',
+            StorageClass: 'REDUCED_REDUNDANCY',
+            ContentType: 'image/jpeg'
+        });
+
+        upload.on('error', function (error) {
+            console.log(error);
+        });
+
+        renderStream.pipe(upload);
+
+        console.log('caching card ' + cardId);
+    });
 }
