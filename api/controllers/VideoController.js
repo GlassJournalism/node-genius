@@ -43,16 +43,6 @@ module.exports = {
         return res.json({
             todo: 'edit() is not implemented yet!'
         });
-    },
-
-
-    /**
-     * `VideoController.delete()`
-     */
-    delete: function (req, res) {
-        return res.json({
-            todo: 'delete() is not implemented yet!'
-        });
     }
 };
 
