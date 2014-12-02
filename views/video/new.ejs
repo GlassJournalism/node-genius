@@ -4,6 +4,7 @@
 <div class="row">
     <div class="small-6 columns">
         <h1>New Video</h1>
+        <input id="name" type="text" placeholder="Video title">
         <input id="url" type="filepicker" data-fp-apikey="AGtevGIzSpOUnSnd2MVEoz" data-fp-mimetypes="video/*"
                data-fp-container="modal" onchange="$('#videobox').append('<video controls src='+$('#url').val()+'>')">
         <button class="save-button">Save</button>
@@ -25,7 +26,8 @@
             var url = '/video/create';
 
             $.post(url, {
-                url: $("#url").val()
+                url: $("#url").val(),
+                name: $("#name").val()
             }, function success(data) {
                 window.location.href = '/video/'
             });
