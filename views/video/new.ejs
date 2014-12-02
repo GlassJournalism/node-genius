@@ -1,0 +1,35 @@
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+
+<br>
+<div class="row">
+    <div class="small-6 columns">
+        <h1>New Video</h1>
+        <input id="url" type="filepicker" data-fp-apikey="AGtevGIzSpOUnSnd2MVEoz" data-fp-mimetypes="video/*"
+               data-fp-container="modal" onchange="$('#videobox').append('<video controls src='+$('#url').val()+'>')">
+        <button class="save-button">Save</button>
+    </div>
+    <div class="small-6 columns"></div>
+</div>
+
+<div class="row">
+    <div class="small-6 columns" id="videobox"></div>
+    <div class="small-6 columns"></div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.save-button').on('click', function saveClick() {
+            console.log('click');
+            var url = '/video/create';
+
+            $.post(url, {
+                url: $("#url").val()
+            }, function success(data) {
+                window.location.href = '/video/'
+            });
+        });
+    });
+
+</script>
