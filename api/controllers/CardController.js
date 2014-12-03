@@ -108,7 +108,7 @@ module.exports = {
                     res.status(500);
                     return res.end();
                 }
-                res.write('<html><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body style="width: 640px; height: 360px">');
+                res.write('<html style="width: 640px; height: 360px"><head><link rel="stylesheet" href="/styles/glass-preview.css"></head><body>');
                 res.write(html + '</body></html>');
                 return res.end();
             });
