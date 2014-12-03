@@ -230,7 +230,6 @@ module.exports = {
     }
 
 }
-;
 
 function compileCard(card, callback) {
     //not sure why this is necessary but sometimes some of these are undefined...
