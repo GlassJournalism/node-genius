@@ -54,6 +54,10 @@ module.exports.routes = {
         view: 'photo/upload'
     },
 
+    '/video/new': {
+        view: 'video/new'
+    },
+
     'get /template/create': {
         view: 'template/create_edit'
     },

@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/styles/photo-style.css">
+<br>
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Videos</h1>
+        <a class="button" href="/video/new">New</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-4 columns">
+        <% for(var i = 0; i < videos.length; i++){ %>
+        <div class="grid-image">
+            <h2><%= videos[i].name %></h2>
+            <video controls src="<%= videos[i].url %>"/>
+        </div>
+    </div>
+    <div class="small-4 columns">
+        <% } %>
+    </div>
+</div>

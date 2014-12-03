@@ -14,7 +14,7 @@
         <div class="panel">
             <div><h1><a href="/card/edit/<%- cards[i].id %>" style="color: #000000"><%= cards[i].name %></a></h1>
             </div>
-            <iframe class="glass-preview" src="/card/preview/<%= cards[i].id %>"></iframe>
+            <img class="cardthumb" src="/card/render/<%= cards[i].id %>"></iframe>
         </div>
     </div>
     <% } %>
