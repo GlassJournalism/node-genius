@@ -120,11 +120,11 @@
         $('.template-select').on('change', function () {
             socket.get('/template/' + $('.template-select').val(), function (template) {
                 previewTemplate = Handlebars.compile(template.handlebarsTemplate);
-                var variables = template.handlebarsTemplate.match(/{{(.*?)}}/g);
+                var variables = template.handlebarsTemplate.match(/{{{?(.*?)}}}?/g);
                 $('.variables-container').html('');
                 if (variables) {
                     for (var i = 0; i < variables.length; i++) {
-                        variables[i] = variables[i].replace(/{{/g, '').replace(/}}/g, '');
+                        variables[i] = variables[i].replace(/{{{?/g, '').replace(/}}}?/g, '');
                         $('.variables-container')
                                 .append(variableRowTemplate({name: variables[i]}))
                                 .append('<div style="clear: both; height: 0"></div>');
