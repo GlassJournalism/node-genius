@@ -1,141 +1,122 @@
 <br>
 <div class="row">
     <div class="small-6 columns">
-        <h1>Story Title</h1>
-        <input class="category-name-input" type="text" placeholder="Name">
-       </div>
-       <br><br>
+        <h1><%= categoryEditing.name %></h1>
+        <input class="category-name-input" type="text" placeholder="Name" value=<%= categoryEditing.name %>>
+    </div>
+    <br><br>
+
     <div class="small-4 columns">
-   	</div>
+    </div>
     <div class="small-2 columns">
-    <a href="#">Story Library</a>
+        <a href="/category">Story Library</a>
     </div>
 </div>
 
 <br>
 
 <div class="row">
-<div class="small-6 columns">
-Preview
-</div>
-<div class="small-6 columns">
-</div>
+    <div class="small-6 columns">
+        Preview
+    </div>
+    <div class="small-6 columns">
+    </div>
 </div>
 
 <!--possible iframe, Jessie halp-->
 <br>
 <div class="row">
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-</div>
-</div>
-<br>
-<div class="row">
-<div class="small-6 columns">
-<button class="save-button disabled">Create new card</button> 
-</div>
-<div class="small-6 columns">
-</div>
-</div>
+    <% for(var i = 0; i < Math.min(categoryEditing.cards.length, 6); i++){ %>
+    <div class="small-2 columns">
+        <img src="/card/render/<%= cardEditing.cards[i].id %>">
+    </div>
+    <% } %>
+    <br>
 
-<div class="row">
-<div class="small-12 columns">
-<hr />
-</div>
-</div>
+    <div class="row">
+        <div class="small-6 columns">
+            <button class="save-button disabled">Create new card</button>
+        </div>
+        <div class="small-6 columns">
+        </div>
+    </div>
 
-<br>
-<div class="row">
-<div class="small-6 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
+    <div class="row">
+        <div class="small-12 columns">
+            <hr/>
+        </div>
+    </div>
 
-<div class="small-6 columns">
-Trigger Words / Footer
-<br><br>
-<input class="category-name-input" type="text" placeholder="Ebola">
-</div>
-<div class="small-6 columns">
-Location Trigger 
-<br><br>
-<input class="category-name-input" type="text" placeholder="Address">
-</div>
-<div class="small-6 columns">
-<img src="http://i.imgur.com/nAVlYSA.png">
-</div>
+    <br>
+
+    <div class="row">
+        <div class="small-6 columns">
+            <img src="http://i.imgur.com/XNhXB15.jpg">
+        </div>
+
+        <div class="small-6 columns">
+            Trigger Words / Footer
+            <br><br>
+            <input class="category-name-input" type="text" placeholder="Ebola">
+        </div>
+        <div class="small-6 columns">
+            Location Trigger
+            <br><br>
+            <input class="category-name-input" type="text" placeholder="Address">
+        </div>
+        <div class="small-6 columns">
+            <img src="http://i.imgur.com/nAVlYSA.png">
+        </div>
 
 
-</div>
+    </div>
 
-<div class="row">
-<br><br>
-<div class="small-9 columns">
-Choose a template
-</div>
+    <div class="row">
+        <br><br>
 
-<!--how to move this button to the far right?!-->
-<div class="small-3 columns">
-<a href="#" class="button tiny">Create new template</a>
-</div>
-</div>
+        <div class="small-9 columns">
+            Choose a template
+        </div>
 
-<!--also possible iframe, Jessie halp pls-->
-<div class="row">
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-2 columns">
-</div>
-</div>
+        <!--how to move this button to the far right?!-->
+        <div class="small-3 columns">
+            <a href="/template/create" class="button tiny">Create new template</a>
+        </div>
+    </div>
 
-<br><br><br>
-<div class="row">
-<div class="small-12 columns">
-Image
-</div>
-</div>
+    <div class="row">
+        <% for(var i = 0; i < Math.min(templates.length, 6); i++){ %>
+        <div class="small-2 columns">
+            <iframe style="width: 320px; height: 180px;" class="glass-preview"
+                    src="/template/preview/<%= templates[i].id %>?scale=0.25"></iframe>
+        </div>
+        <% } %>
+    </div>
 
-<br>
+    <br><br><br>
 
-<div class="row">
-<div class="small-5 columns">
-<img src="http://i.imgur.com/XNhXB15.jpg">
-</div>
-<div class="small-7 columns">
-Text
-<br><br>
-<textarea class="category-name-input" placeholder="Ebola is a disease that first appeared in 1976 in Sudan and Congo."></textarea>
-</div>
-<div class="small-7 columns">
-Timestamp
-<br><br>
-<input class="category-name-input" type="text">
-</div>
-</div>
-<br><br>
+    <div class="row">
+        <div class="small-12 columns">
+            Image
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="small-5 columns">
+            <img src="http://i.imgur.com/XNhXB15.jpg">
+        </div>
+        <div class="small-7 columns">
+            Text
+            <br><br>
+            <textarea class="category-name-input"
+                      placeholder="Ebola is a disease that first appeared in 1976 in Sudan and Congo."></textarea>
+        </div>
+        <div class="small-7 columns">
+            Timestamp
+            <br><br>
+            <input class="category-name-input" type="text">
+        </div>
+    </div>
+    <br><br>

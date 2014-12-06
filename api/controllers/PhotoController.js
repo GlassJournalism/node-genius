@@ -12,12 +12,18 @@
 
 module.exports = {
 
+
     index: function (req, res) {
         Photo.find(function (err, photos) {
-            return res.view('photo/index',
-                {
-                    photos: photos
-                });
+
+            if (req.wantsJSON || req.isSocket) {
+                return res.json(photos);
+            } else {
+                return res.view('photo/index',
+                    {
+                        photos: photos
+                    });
+            }
         });
     }
 
