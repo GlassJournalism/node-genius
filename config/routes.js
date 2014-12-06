@@ -38,9 +38,7 @@ module.exports.routes = {
         view: 'home/index'
     },
 
-    '/mediabucket': {
-        view: 'mediabucket'
-    },
+    '/mediabucket': 'CategoryController.mediabucket',
 
     '/dashboard': 'CategoryController.dashboard',
 

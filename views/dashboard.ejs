@@ -7,8 +7,8 @@
             <h3><a href="/mediabucket">Media Bucket</a></h3>
         </div>
         <ul class="small-block-grid-2">
-            <% for(var i = 0; i < photos.length; i++){ %>
-            <li class="box"><span class="label radius">Image</span><a href="#"><img src="<% photos[i].imageUrl %>"/></a>
+            <% for(var i = 0; i < Math.min(photos.length, 6); i++){ %>
+            <li class="box"><span class="label radius">Image</span><a href="#"><img src="<%= photos[i].imageUrl %>"/></a>
             </li>
             <% } %>
         </ul>
@@ -27,7 +27,7 @@
         <ul class="small-block-grid-2">
             <li class="box text-center"><a href="/category/add">&nbsp;<br>+<br>New Story<br><br></a></li>
             <% for(var i = 0; i < categories.length; i++){ %>
-            <li class="box text-center"><a href="/category/edit/<% categories[i].id %>">&nbsp;<br><br><% categories[i].name %><br><br></a></li>
+            <li class="box text-center"><a href="/category/edit/<%= categories[i].id %>">&nbsp;<br><br><%= categories[i].name %><br><br></a></li>
             <% } %>
         </ul>
     </div>
@@ -39,9 +39,9 @@
         </div>
         <div class="row">
             <ul class="small-block-grid-2">
-                <li class="box text-center"><a href="/video/add"><br>+<br>new POV<br><br></a></li>
+                <li class="box text-center"><a href="/video/new"><br>+<br>new POV<br><br></a></li>
                 <% for(var i = 0; i < videos.length; i++){ %>
-                <li class="box text-center"><a href="/video/edit/<% videos[i].id %>"><br><br><% videos[i].name %><br><br></a></li>
+                <li class="box text-center"><a href="/video/edit/<%= videos[i].id %>"><br><br><%= videos[i].name %><br><br></a></li>
                 <% } %>
             </ul>
         </div>

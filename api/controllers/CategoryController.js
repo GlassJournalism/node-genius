@@ -49,6 +49,17 @@ module.exports = {
                 });
             });
         });
+    },
+
+    mediabucket: function (req, res) {
+        Video.find(function (err, videos) {
+            Photo.find(function (err, photos) {
+                return res.view('mediabucket', {
+                    videos: videos,
+                    photos: photos
+                });
+            });
+        });
     }
 
 };
