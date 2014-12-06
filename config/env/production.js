@@ -1,9 +1,9 @@
 module.exports = {
     models: {
         connection: 'productionMongoHQ'
-    },
+    }
 
-    session: {
+    /*session: {
         adapter: 'redis',
         //
         // The following values are optional, if no options are set a redis instance running
@@ -16,5 +16,5 @@ module.exports = {
         db: 'redistogo',
         pass: 'a641d4d4e2090099a63bf22430aea054',
         prefix: 'sess:'
-    }
+    }*/
 };
