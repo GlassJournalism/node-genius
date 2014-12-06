@@ -1,0 +1,76 @@
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+
+<br>
+<div class="row">
+    <div class="small-6 columns">
+        <h1><%= typeof videoEditing == 'undefined' ? "New Video" : "Editing: " + videoEditing.name %></h1>
+        <input id="name" type="text"
+               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.name : 'Video title' %>">
+
+        <h2>Video File</h2>
+               data-fp-container="modal" onchange="$('#videobox').attr('src', $('#url').val())"
+               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>">
+
+        <h2>Thumbnail</h2>
+               data-fp-container="modal" onchange="$('#thumbnailbox').attr('src', $('#thumbnail').val())"
+               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>">
+    </div>
+    <div class="small-6 columns"></div>
+</div>
+
+<div class="row">
+    <div class="small-6 columns">
+        <button class="save-button">Save</button>
+        <% if(typeof videoEditing != 'undefined') { %>
+        <button class="alert delete-button" id="<%= videoEditing.id %>">Delete</button>
+        <% } %>
+    </div>
+</div>
+<div class="row">
+    <div class="small-6 columns">
+        <video controls src="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>" id="videobox"/>
+    </div>
+    <div class="small-6 columns"></div>
+</div>
+
+<div class="row">
+    <div class="small-6 columns">
+        <img id="thumbnailbox" src="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>"/>
+    </div>
+    <div class="small-6 columns"></div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('.save-button').on('click', function saveClick() {
+            var url = '/video/create';
+            <% if(typeof videoEditing != 'undefined') { %>
+            url = '/video/update/<%- videoEditing.id %>';
+            <% } %>
+            $.post(url, {
+                url: $("#url").val(),
+                name: $("#name").val(),
+                thumbnail: $("#thumbnail").val()
+            }, function success(data) {
+                var id = data.id;
+                window.location.href = '/video/edit/' + id;
+            });
+        });
+    });
+
+    $(".delete-button").on('click', function deleteClick() {
+        var url = '/video/' + $(this).prop('id');
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function (result) {
+                window.location.href = '/video/'
+            }
+        });
+    });
+
+</script>

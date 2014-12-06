@@ -26,22 +26,15 @@ module.exports = {
         });
     },
 
-    /**
-     * `VideoController.show()`
-     */
-    show: function (req, res) {
-        return res.json({
-            todo: 'show() is not implemented yet!'
-        });
-    },
-
 
     /**
      * `VideoController.edit()`
      */
     edit: function (req, res) {
-        return res.json({
-            todo: 'edit() is not implemented yet!'
+        Video.findOne({id: req.params.id}).exec(function (err, video) {
+            return res.view('video/create_edit', {
+                videoEditing: video
+            });
         });
     }
 };

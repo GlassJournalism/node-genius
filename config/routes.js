@@ -54,9 +54,11 @@ module.exports.routes = {
         view: 'photo/upload'
     },
 
-    '/video/new': {
-        view: 'video/new'
+    'get /video/new': {
+        view: 'video/create_edit'
     },
+
+    'get /video/edit': 'VideoController.edit',
 
     'get /template/create': {
         view: 'template/create_edit'

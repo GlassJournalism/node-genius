@@ -11,7 +11,7 @@
     <div class="small-4 columns">
         <% for(var i = 0; i < videos.length; i++){ %>
         <div class="grid-image">
-            <h2><%= videos[i].name %></h2>
+            <h2><a href="/video/edit/<%=i%>"><%= videos[i].name %></a></h2>
             <video controls src="<%= videos[i].url %>"/>
         </div>
     </div>
