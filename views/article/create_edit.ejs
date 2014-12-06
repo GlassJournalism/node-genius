@@ -7,6 +7,10 @@
         <input id="title" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.title : 'Article title' %>">
 
+        <h1>Source</h1>
+        <input id="source" type="text"
+               value="<%= (typeof articleEditing != 'undefined') ? articleEditing.source : 'Article source URL' %>">
+
         <h1>Publication</h1>
         <input id="publication" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.publication : 'Article publication' %>">
@@ -65,7 +69,8 @@
                 publication: $("#publication").val(),
                 author: $("#author").val(),
                 thumbnailURL: $("#thumbnailURL").val(),
-                iconURL: $("#iconURL").val()
+                iconURL: $("#iconURL").val(),
+                source: $("#source").val()
             }, function success(data) {
                 var id = data.id;
                 window.location.href = '/article/edit/' + id;

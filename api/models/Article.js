@@ -15,7 +15,8 @@ module.exports = {
         publication: 'string',
         author: 'string',
         thumbnailURL: 'string',
-        iconURL: 'string'
+        iconURL: 'string',
+        source: 'string'
     }
 };
 
