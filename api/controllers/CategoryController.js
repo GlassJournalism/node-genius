@@ -24,6 +24,14 @@ module.exports = {
         Category.find(function (err) {
             return res.view('category/add');
         });
+    },
+
+    edit: function (req, res) {
+        Category.findOne({id: req.params.id}).exec(function (err, category) {
+            return res.view('category/edit', {
+                categoryEditing: category
+            });
+        });
     }
 
 };
