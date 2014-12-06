@@ -61,7 +61,9 @@
 </div>
 
 <div class="row">
+
     <div class="small-6 columns">
+        <h2 id="card-title"></h2>
         <img id="cardPreviewImage" src="http://dummyimage.com/600x360/000/ffffff.jpg&text=+">
     </div>
 
@@ -136,6 +138,7 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
+                $("#card-title").text().replace(card.name);
                 $('#tags').empty();
                 $('#tags').tagsInput({
                     'height': "70px",
