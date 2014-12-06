@@ -28,76 +28,75 @@
 <!--possible iframe, Jessie halp-->
 <br>
 <div class="row">
-    <div class="row">
-        <% for(var i = 0; i < Math.min(cards.length, 6); i++){ %>
-        <div class="small-2 columns">
-            <img class="card-button" id="<%= cards[i].id %>" src="/card/render/<%= cards[i].id %>">
-        </div>
-        <% } %>
-        <br>
+    <% for(var i = 0; i < cards.length; i++){ %>
+    <div class="small-2 columns">
+        <img class="card-button" id="<%= cards[i].id %>" src="/card/render/<%= cards[i].id %>">
     </div>
-
-    <div class="row">
-        <div class="small-6 columns">
-            <button class="save-button disabled">Create new card</button>
-        </div>
-        <div class="small-6 columns">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 columns">
-            <hr/>
-        </div>
-    </div>
-
+    <% } %>
     <br>
+</div>
 
-    <div class="row">
-        <div class="small-6 columns">
-            <img id="cardPreviewImage" src="/card/render/<%= cards[i].id %>">
-        </div>
+<div class="row">
+    <div class="small-6 columns">
+        <button class="save-button disabled">Create new card</button>
+    </div>
+    <div class="small-6 columns">
+    </div>
+</div>
 
-        <div class="small-6 columns">
-            Tags
-            <br><br>
-            <input id="tags" class="category-name-input" type="text" value="<%= cards[i].triggerWords %>">
-        </div>
-        <div class="small-6 columns">
-            Location Trigger
-            <br><br>
-            <input id="us2-address" class="category-name-input" type="text" placeholder="Address">
-        </div>
-        <div class="small-6 columns">
-            <div id="mappicker" style="width: 500px; height: 235px;"></div>
-        </div>
+<div class="row">
+    <div class="small-12 columns">
+        <hr/>
+    </div>
+</div>
 
+<br>
 
+<div class="row">
+    <div class="small-6 columns">
+        <img id="cardPreviewImage" src="/card/render/<%= cards[i].id %>">
     </div>
 
-    <div class="row">
+    <div class="small-6 columns">
+        Tags
         <br><br>
-
-        <div class="small-9 columns">
-            Choose a template
-        </div>
-
-        <!--how to move this button to the far right?!-->
-        <div class="small-3 columns">
-            <a href="/template/create" class="button tiny">Create new template</a>
-        </div>
+        <input id="tags" class="category-name-input" type="text" value="<%= cards[i].triggerWords %>">
+    </div>
+    <div class="small-6 columns">
+        Location Trigger
+        <br><br>
+        <input id="us2-address" class="category-name-input" type="text" placeholder="Address">
+    </div>
+    <div class="small-6 columns">
+        <div id="mappicker" style="width: 500px; height: 235px;"></div>
     </div>
 
-    <div class="row">
-        <% for(var i = 0; i < Math.min(templates.length, 6); i++){ %>
-        <div class="small-2 columns">
-            <iframe style="width: 320px; height: 180px;" class="glass-preview"
-                    src="/template/preview/<%= templates[i].id %>?scale=0.25"></iframe>
-        </div>
-        <% } %>
+
+</div>
+
+<div class="row">
+    <br><br>
+
+    <div class="small-9 columns">
+        Choose a template
     </div>
 
-    <br><br><br>
+    <!--how to move this button to the far right?!-->
+    <div class="small-3 columns">
+        <a href="/template/create" class="button tiny">Create new template</a>
+    </div>
+</div>
+
+<div class="row">
+    <% for(var i = 0; i < Math.min(templates.length, 6); i++){ %>
+    <div class="small-2 columns">
+        <iframe style="width: 320px; height: 180px;" class="glass-preview"
+                src="/template/preview/<%= templates[i].id %>?scale=0.25"></iframe>
+    </div>
+    <% } %>
+</div>
+
+<br><br><br>
 
 </div>
 
@@ -108,7 +107,10 @@
 
     $(document).ready(function () {
 
-        $('#tags').tagsInput();
+        $('#tags').tagsInput({
+            'height': "70px",
+            'width': "500px"
+        });
         $('#mappicker').locationpicker({
             location: {latitude: 34.0210043, longitude: -118.2876044},
             radius: 50,
