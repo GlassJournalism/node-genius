@@ -25,7 +25,7 @@ module.exports = function (req, res, next) {
         if (allowedUsers.indexOf(req.user.email) != -1) {
             return next();
         } else {
-            return sails.config[403]('Not on whitelist', req, res);
+            return sails.config[403]('You must be on the whitelist to continue', req, res);
         }
     }
 
