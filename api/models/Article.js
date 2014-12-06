@@ -12,7 +12,8 @@ module.exports = {
         title: 'string',
         contents: 'string',
         date: 'string',
-        location: 'string',
+        publication: 'string',
+        author: 'string',
         thumbnailURL: 'string',
         iconURL: 'string'
     }
