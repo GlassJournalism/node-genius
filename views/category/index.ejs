@@ -8,7 +8,7 @@
         <div class="panel">
             <div class="row">
                 <div class="small-9 columns">
-                    <h2><%= categories[i].name %></h2>
+                    <h2><a href="/card/" <%= categories[i].name %>/></h2>
                 </div>
                 <div class="small-3 columns">
                     <button class="button small alert delete-button" id="<%= categories[i].id %>">Delete</button>
@@ -23,7 +23,7 @@
 </div>
 
 <script>
-    window.onload = function () {
+    $(document).ready(function () {
         $(".delete-button").on('click', function deleteClick() {
             var url = '/category/' + $(this).prop('id');
 
@@ -35,7 +35,7 @@
                 }
             });
         });
-    }
+    });
 
 </script>
 
