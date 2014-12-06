@@ -9,12 +9,12 @@
 
         <h2>Video File</h2>
                data-fp-container="modal" onchange="$('#videobox').attr('src', $('#url').val())"
-               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>">
+               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>"/>
         <video controls src="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>" id="videobox"/>
 
         <h2>Thumbnail</h2>
                data-fp-container="modal" onchange="$('#thumbnailbox').attr('src', $('#thumbnail').val())"
-               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>">
+               value="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>"/>
         <img id="thumbnailbox" src="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>"/>
 
     </div>
