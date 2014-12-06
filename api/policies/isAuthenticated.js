@@ -18,8 +18,11 @@ module.exports = function (req, res, next) {
     // User is allowed, proceed to the next policy,
     // or if this is the last policy, the controller
     if (req.user) {
-        if (allowedUsers.indexOf(req.user.email) != -1)
+        if (allowedUsers.indexOf(req.user.email) != -1) {
             return next();
+        } else {
+            return sails.config[403]('Not on whitelist', req, res);
+        }
     }
 
     // User is not allowed
