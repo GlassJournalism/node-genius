@@ -8,7 +8,7 @@
         <div class="panel">
             <div class="row">
                 <div class="small-9 columns">
-                    <h2><a href="/card/" <%= categories[i].name %>/></h2>
+                    <h2><a href="/category/edit/<%= categories[i].id %>"><%= categories[i].name %></a></h2>
                 </div>
                 <div class="small-3 columns">
                     <button class="button small alert delete-button" id="<%= categories[i].id %>">Delete</button>

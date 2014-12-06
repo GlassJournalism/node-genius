@@ -74,9 +74,7 @@ module.exports.routes = {
 
     'get /category/add': 'CategoryController.addCategory',
 
-    'get /category/edit': {
-        view: 'category/edit'
-    },
+    'get /category/edit': 'CategoryController.edit',
 
     // Redirect the user to Google for authentication.  When complete, Google
     // will redirect the user back to the application at
