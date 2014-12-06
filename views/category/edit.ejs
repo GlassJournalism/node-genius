@@ -143,7 +143,7 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
-                $("#card-title").text().(card.name);
+                $("#card-title").text(card.name);
                 $('#tags').empty();
                 $('#tags').tagsInput({
                     'height': "70px",
