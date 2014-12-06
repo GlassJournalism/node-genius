@@ -8,15 +8,15 @@
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.title : 'Article title' %>">
 
         <h1>Contents</h1>
-        <textarea id="name"
+        <textarea id="contents"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.contents : 'Article contents' %>"></textarea>
 
         <h1>Date</h1>
-        <input id="name" type="text"
+        <input id="date" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.date : 'Article date' %>">
 
         <h1>Location</h1>
-        <input id="name" type="text"
+        <input id="location" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.location : 'Article location' %>">
 
         <div class="panel">
@@ -54,12 +54,12 @@
             url = '/article/update/<%- articleEditing.id %>';
             <% } %>
             $.post(url, {
-                title: $("title").val(),
-                contents: $("contents").val(),
-                date: $("date").val(),
-                location: $("location").val(),
-                thumbnailURL: $("thumbnailURL").val(),
-                iconURL: $("iconURL").val()
+                title: $("#title").val(),
+                contents: $("#contents").val(),
+                date: $("#date").val(),
+                location: $("#location").val(),
+                thumbnailURL: $("#thumbnailURL").val(),
+                iconURL: $("#iconURL").val()
             }, function success(data) {
                 var id = data.id;
                 window.location.href = '/article/edit/' + id;
