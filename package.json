@@ -20,7 +20,8 @@
     "natural": "~0.1.28",
     "mixpanel": "0.0.20",
     "s3-upload-stream": "~1.0.6",
-    "aws-sdk": "~2.0.27"
+    "aws-sdk": "~2.0.27",
+    "connect-redis": "~1.4.5"
   },
   "scripts": {
     "start": "node app.js",
