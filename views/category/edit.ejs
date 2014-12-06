@@ -150,7 +150,10 @@
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
                 $('#tags').importTags('');
-                $('#tags').importTags(card.triggerWords);
+                $.each(card.triggerWords, function (key, value) {
+                    console.log(value);
+                    $("#tags").addTag(value);
+                });
             });
         });
     });
