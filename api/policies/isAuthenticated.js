@@ -15,6 +15,10 @@ module.exports = function (req, res, next) {
         return next();
     }
 
+    if (req.method === 'GET' && (req.path.indexOf('/card/render/') != -1 || req.path.indexOf('/card/preview/') != -1)) {
+        return next();
+    }
+
     // User is allowed, proceed to the next policy,
     // or if this is the last policy, the controller
     if (req.user) {
