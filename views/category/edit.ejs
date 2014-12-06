@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/styles/jquery.tagsinput.css"/>
+
 <br>
 <div class="row">
     <div class="small-6 columns">
@@ -53,13 +55,13 @@
 
     <div class="row">
         <div class="small-6 columns">
-            <img id="cardPreviewImage" src="/card/render<%= cards[i].id %>">
+            <img id="cardPreviewImage" src="/card/render/<%= cards[i].id %>">
         </div>
 
         <div class="small-6 columns">
             Tags
             <br><br>
-            <input class="category-name-input" type="text" value="<%= cards[i].triggerWords %>">
+            <input id="tags" class="category-name-input" type="text" value="<%= cards[i].triggerWords %>">
         </div>
         <div class="small-6 columns">
             Location Trigger
@@ -127,9 +129,18 @@
 <script>
 
     $(document).ready(function () {
+
+        $('#tags').tagsInput();
+
         $(".card-button").click(function () {
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
-        })
+
+            socket.get('/card/' + $(this).attr('id'), function (card) {
+                $.each(card.triggerWords, function (key, value) {
+                    $("#tags").addTag(value);
+                });
+            });
+        });
     });
 
 </script>
