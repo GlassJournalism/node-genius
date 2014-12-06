@@ -10,10 +10,13 @@
         <h2>Video File</h2>
                data-fp-container="modal" onchange="$('#videobox').attr('src', $('#url').val())"
                value="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>">
+        <video controls src="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>" id="videobox"/>
 
         <h2>Thumbnail</h2>
                data-fp-container="modal" onchange="$('#thumbnailbox').attr('src', $('#thumbnail').val())"
                value="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>">
+        <img id="thumbnailbox" src="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>"/>
+
     </div>
     <div class="small-6 columns"></div>
 </div>
@@ -26,20 +29,6 @@
         <% } %>
     </div>
 </div>
-<div class="row">
-    <div class="small-6 columns">
-        <video controls src="<%= (typeof videoEditing != 'undefined') ? videoEditing.url : '' %>" id="videobox"/>
-    </div>
-    <div class="small-6 columns"></div>
-</div>
-
-<div class="row">
-    <div class="small-6 columns">
-        <img id="thumbnailbox" src="<%= (typeof videoEditing != 'undefined') ? videoEditing.thumbnail : '' %>"/>
-    </div>
-    <div class="small-6 columns"></div>
-</div>
-
 
 <script>
 
