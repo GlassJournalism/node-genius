@@ -2,7 +2,7 @@
 
 <br>
 <div class="row">
-    <div class="small-6 columns">
+    <div class="small-8 columns">
         <h1><%= typeof articleEditing == 'undefined' ? "New Article" : "Editing: " + articleEditing.title %></h1>
         <input id="title" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.title : 'Article title' %>">
@@ -36,7 +36,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="small-6 columns">
+    <div class="small-8 columns">
         <button class="save-button">Save</button>
         <% if(typeof articleEditing != 'undefined') { %>
         <button class="alert delete-button" id="<%= articleEditing.id %>">Delete</button>
