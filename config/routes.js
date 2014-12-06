@@ -60,6 +60,12 @@ module.exports.routes = {
 
     'get /video/edit': 'VideoController.edit',
 
+    'get /article/new': {
+        view: 'article/create_edit'
+    },
+
+    'get /article/edit': 'ArticleController.edit',
+
     'get /template/create': {
         view: 'template/create_edit'
     },
