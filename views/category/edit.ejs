@@ -26,12 +26,14 @@
 <!--possible iframe, Jessie halp-->
 <br>
 <div class="row">
-    <% for(var i = 0; i < Math.min(cards.length, 6); i++){ %>
-    <div class="small-2 columns">
-        <img src="/card/render/<%= cards[i].id %>">
+    <div class="row">
+        <% for(var i = 0; i < Math.min(cards.length, 6); i++){ %>
+        <div class="small-2 columns">
+            <img class="card-button" id="<%= cards[i].id %>" src="/card/render/<%= cards[i].id %>">
+        </div>
+        <% } %>
+        <br>
     </div>
-    <% } %>
-    <br>
 
     <div class="row">
         <div class="small-6 columns">
@@ -51,13 +53,13 @@
 
     <div class="row">
         <div class="small-6 columns">
-            <img src="http://i.imgur.com/XNhXB15.jpg">
+            <img id="cardPreviewImage" src="/card/render<%= cards[i].id %>">
         </div>
 
         <div class="small-6 columns">
-            Trigger Words / Footer
+            Tags
             <br><br>
-            <input class="category-name-input" type="text" placeholder="Ebola">
+            <input class="category-name-input" type="text" value="<%= cards[i].triggerWords %>">
         </div>
         <div class="small-6 columns">
             Location Trigger
@@ -120,3 +122,14 @@
         </div>
     </div>
     <br><br>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $(".card-button").click(function () {
+            $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
+        })
+    });
+
+</script>
