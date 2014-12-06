@@ -29,18 +29,23 @@
 
     <br>
 
-    <% for(var i = 0; i < cards.length; i++){ %>
-    <% if (i % 6 == 0) { %>
+    <%
+    var closeAt = 3;
+            for(var i = 0; i < cards.length; i++){ %>
+    <% if (i % 4 == 0) {
+    %>
     <div class="row">
         <% } %>
-        <div class="small-2 columns">
+        <div class="small-3 columns">
             <img class="card-button" id="<%= cards[i].id %>" src="/card/render/<%= cards[i].id %>">
         </div>
-        <% if (i % 6 == 0) { %>
+        <% if (i == closeAt) {
+            closeAt += 4; %>
     </div>
     <% } %>
     <% } %>
-    <br>
+</div>
+<br>
 
 </div>
 
@@ -138,7 +143,7 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
-                $("#card-title").text().replace(card.name);
+                $("#card-title").text().(card.name);
                 $('#tags').empty();
                 $('#tags').tagsInput({
                     'height': "70px",
