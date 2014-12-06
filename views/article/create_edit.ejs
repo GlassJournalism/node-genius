@@ -7,17 +7,17 @@
         <input id="title" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.title : 'Article title' %>">
 
+        <h1>Subtitle</h1>
+        <input id="location" type="text"
+               value="<%= (typeof articleEditing != 'undefined') ? articleEditing.location : 'Article subtitle' %>">
+
         <h1>Contents</h1>
-        <textarea id="contents"
-               value="<%= (typeof articleEditing != 'undefined') ? articleEditing.contents : 'Article contents' %>"></textarea>
+        <textarea id="contents">
+               <%= (typeof articleEditing != 'undefined') ? articleEditing.contents : 'Article contents' %></textarea>
 
         <h1>Date</h1>
         <input id="date" type="text"
                value="<%= (typeof articleEditing != 'undefined') ? articleEditing.date : 'Article date' %>">
-
-        <h1>Location</h1>
-        <input id="location" type="text"
-               value="<%= (typeof articleEditing != 'undefined') ? articleEditing.location : 'Article location' %>">
 
         <div class="panel">
             <h2>Thumbnail</h2>
