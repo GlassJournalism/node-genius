@@ -149,6 +149,7 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
+                $("#card-title").html("<a href='/card/edit/" + card.id + "'><h2>" + card.name + "</h2></a>");
                 $('#tags').importTags('');
                 $.each(card.triggerWords, function (key, value) {
                     console.log(value);
