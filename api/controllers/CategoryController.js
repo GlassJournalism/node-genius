@@ -29,9 +29,12 @@ module.exports = {
     edit: function (req, res) {
         Category.findOne({id: req.params.id}).exec(function (err, category) {
             Template.find(function (err, templates) {
-                return res.view('category/edit', {
-                    categoryEditing: category,
-                    templates: templates
+                Card.find(function (err, cards) {
+                    return res.view('category/edit', {
+                        categoryEditing: category,
+                        templates: templates,
+                        cards: cards
+                    });
                 });
             });
         });

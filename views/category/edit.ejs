@@ -26,9 +26,9 @@
 <!--possible iframe, Jessie halp-->
 <br>
 <div class="row">
-    <% for(var i = 0; i < Math.min(categoryEditing.cards.length, 6); i++){ %>
+    <% for(var i = 0; i < Math.min(cards.length, 6); i++){ %>
     <div class="small-2 columns">
-        <img src="/card/render/<%= cardEditing.cards[i].id %>">
+        <img src="/card/render/<%= cards[i].id %>">
     </div>
     <% } %>
     <br>

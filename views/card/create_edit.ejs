@@ -190,7 +190,7 @@
             });
 
             <% if(typeof cardEditing != 'undefined' && cardEditing.category) { %>
-            $('.category-select').val('<%- cardEditing.category.id %>');
+            $('.category-select').val('<%- cardEditing.category.name %>');
             <% } %>
         });
     })
