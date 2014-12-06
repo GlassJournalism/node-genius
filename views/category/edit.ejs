@@ -66,19 +66,10 @@
         <div class="small-6 columns">
             Location Trigger
             <br><br>
-
-            <div class="small-4 columns">
-                <input id="us2-address" class="category-name-input" type="text" placeholder="Address">
-            </div>
-            <div class="small-4 columns">
-                <input id="us2-lat" class="category-name-input" type="text" placeholder="Latitude">
-            </div>
-            <div class="small-4 columns">
-                <input id="us2-lon" class="category-name-input" type="text" placeholder="Longitude">
-            </div>
+            <input id="us2-address" class="category-name-input" type="text" placeholder="Address">
         </div>
         <div class="small-6 columns">
-            <div id="mappicker" style="width: 509px; height: 235px;"></div>
+            <div id="mappicker" style="width: 500px; height: 235px;"></div>
         </div>
 
 
@@ -122,8 +113,6 @@
             location: {latitude: 34.0210043, longitude: -118.2876044},
             radius: 50,
             inputBinding: {
-                latitudeInput: $('#us2-lat'),
-                longitudeInput: $('#us2-lon'),
                 locationNameInput: $('#us2-address')
             }
         });
@@ -132,6 +121,11 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
+                $('#tags').empty();
+                $('#tags').tagsInput({
+                    'height': "70px",
+                    'width': "500px"
+                });
                 $.each(card.triggerWords, function (key, value) {
                     $("#tags").addTag(value);
                 });
