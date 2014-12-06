@@ -76,7 +76,7 @@
         Tags
         <br><br>
 
-        <div id="tags-container"></div>
+        <input id='tags' class='.category-name-input' type='text'>
     </div>
 
     <div class="small-6 columns">
@@ -140,20 +140,17 @@
             }
         });
 
+        $('#tags').tagsInput({
+            'height': "70px",
+            'width': "470px"
+        });
+
         $(".card-button").click(function () {
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
-                $("#card-title").html("<a href='/card/edit/" + card.id + "'><h2>" + card.name + "</h2></a>");
-                $('#tags-container').empty();
-                $("#tags-container").html("<input id='tags' class='category-name-input' type='text'>");
-                $('#tags').tagsInput({
-                    'height': "70px",
-                    'width': "470px"
-                });
-                $.each(card.triggerWords, function (key, value) {
-                    $("#tags").addTag(value);
-                });
+                $('#tags').importTags('');
+                $('#tags').importTags(card.triggerWords);
             });
         });
     });
