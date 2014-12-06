@@ -9,6 +9,7 @@
  */
 module.exports = function (req, res, next) {
 
+
     // allow API requests
     if (req.method === 'GET' && req.wantsJSON) {
         return next();
@@ -16,8 +17,9 @@ module.exports = function (req, res, next) {
 
     // User is allowed, proceed to the next policy,
     // or if this is the last policy, the controller
-    if (req.session.passport.user) {
-        return next();
+    if (req.user) {
+        if (allowedUsers.indexOf(req.user.email) != -1)
+            return next();
     }
 
     // User is not allowed

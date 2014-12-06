@@ -21,12 +21,18 @@ module.exports.bootstrap = function (cb) {
             scope: 'https://www.googleapis.com/auth/glass.timeline https://www.googleapis.com/auth/userinfo.profile email'
         },
         function (accessToken, refreshToken, profile, done) {
-            User.findOrCreate({
-                googleId: profile.id,
-                name: profile.displayName,
-                email: profile.emails[0].value
-            }, function (err, user) {
-                done(err, user);
+            User.findOne({googleId: profile.id}, function (err, user) {
+                if (err || !user) { //user not already in db, need to create
+                    User.create({
+                        googleId: profile.id,
+                        name: profile.displayName,
+                        email: profile.emails[0].value
+                    }, function (err, user) {
+                        done(err, user);
+                    });
+                    return;
+                }
+                done(null, user);
             });
         }
     ));
