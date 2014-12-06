@@ -32,6 +32,23 @@ module.exports = {
                 categoryEditing: category
             });
         });
+    },
+
+    dashboard: function (req, res) {
+        Category.find(function (err, categories) {
+            Card.find(function (err, cards) {
+                Video.find(function (err, videos) {
+                    Photo.find(function (err, photos) {
+                        return res.view('dashboard', {
+                            categories: categories,
+                            cards: cards,
+                            videos: videos,
+                            photos: photos
+                        });
+                    });
+                });
+            });
+        });
     }
 
 };

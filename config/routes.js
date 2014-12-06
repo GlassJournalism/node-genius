@@ -35,16 +35,14 @@ module.exports.routes = {
     //
     // (This would also work if you had a file at: `/views/home.ejs`)
     '/': {
-        view: 'dashboard'
+        view: 'home/index'
     },
 
     '/mediabucket': {
         view: 'mediabucket'
     },
 
-    '/dashboard': {
-        view: 'dashboard'
-    },
+    '/dashboard': 'CategoryController.dashboard',
 
     '/speechDemo': {
         view: 'speechDemo'
