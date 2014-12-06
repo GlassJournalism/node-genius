@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/styles/jquery.tagsinput.css"/>
+<script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+<script src="/js/locationpicker.js"></script>
 
 <br>
 <div class="row">
@@ -66,10 +68,19 @@
         <div class="small-6 columns">
             Location Trigger
             <br><br>
-            <input class="category-name-input" type="text" placeholder="Address">
+
+            <div class="small-4 columns">
+                <input id="us2-address" class="category-name-input" type="text" placeholder="Address">
+            </div>
+            <div class="small-4 columns">
+                <input id="us2-lat" class="category-name-input" type="text" placeholder="Latitude">
+            </div>
+            <div class="small-4 columns">
+                <input id="us2-lon" class="category-name-input" type="text" placeholder="Longitude">
+            </div>
         </div>
         <div class="small-6 columns">
-            <img src="http://i.imgur.com/nAVlYSA.png">
+            <div id="mappicker" style="width: 509px; height: 235px;"></div>
         </div>
 
 
@@ -99,31 +110,6 @@
 
     <br><br><br>
 
-    <div class="row">
-        <div class="small-12 columns">
-            Image
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-        <div class="small-5 columns">
-            <img src="http://i.imgur.com/XNhXB15.jpg">
-        </div>
-        <div class="small-7 columns">
-            Text
-            <br><br>
-            <textarea class="category-name-input"
-                      placeholder="Ebola is a disease that first appeared in 1976 in Sudan and Congo."></textarea>
-        </div>
-        <div class="small-7 columns">
-            Timestamp
-            <br><br>
-            <input class="category-name-input" type="text">
-        </div>
-    </div>
-    <br><br>
 </div>
 
 <script>
@@ -131,6 +117,15 @@
     $(document).ready(function () {
 
         $('#tags').tagsInput();
+        $('#mappicker').locationpicker({
+            location: {latitude: 34.0210043, longitude: -118.2876044},
+            radius: 50,
+            inputBinding: {
+                latitudeInput: $('#us2-lat'),
+                longitudeInput: $('#us2-lon'),
+                locationNameInput: $('#us2-address')
+            }
+        });
 
         $(".card-button").click(function () {
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
