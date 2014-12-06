@@ -68,14 +68,15 @@
 <div class="row">
 
     <div class="small-6 columns">
-        <h2 id="card-title"></h2>
+        <div id="card-title"></div>
         <img id="cardPreviewImage" src="http://dummyimage.com/600x360/000/ffffff.jpg&text=+">
     </div>
 
     <div class="small-6 columns">
         Tags
         <br><br>
-        <input id="tags" class="category-name-input" type="text">
+
+        <div id="tags-container"></div>
     </div>
 
     <div class="small-6 columns">
@@ -143,8 +144,9 @@
             $("#cardPreviewImage").attr("src", "/card/render/" + $(this).attr('id'));
 
             socket.get('/card/' + $(this).attr('id'), function (card) {
-                $("#card-title").text(card.name);
-                $('#tags').empty();
+                $("#card-title").html("<a href='/card/edit/" + card.id + "'><h2>" + card.name + "</h2></a>");
+                $('#tags-container').empty();
+                $("#tags-container").html("<input id='tags' class='category-name-input' type='text'>");
                 $('#tags').tagsInput({
                     'height': "70px",
                     'width': "470px"
