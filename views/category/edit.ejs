@@ -17,7 +17,7 @@
 
 <br>
 
-<div class="panel">
+<div class="panel" id="cardpanel">
 
     <div class="row">
         <div class="small-6 columns">
@@ -29,14 +29,18 @@
 
     <br>
 
+    <% for(var i = 0; i < cards.length; i++){ %>
+    <% if (i % 6 == 0) { %>
     <div class="row">
-        <% for(var i = 0; i < cards.length; i++){ %>
+        <% } %>
         <div class="small-2 columns">
             <img class="card-button" id="<%= cards[i].id %>" src="/card/render/<%= cards[i].id %>">
         </div>
-        <% } %>
-        <br>
+        <% if (i % 6 == 0) { %>
     </div>
+    <% } %>
+    <% } %>
+    <br>
 
 </div>
 
@@ -120,10 +124,6 @@
 
     $(document).ready(function () {
 
-        $('#tags').tagsInput({
-            'height': "70px",
-            'width': "470px"
-        });
         $('#mappicker').locationpicker({
             location: {latitude: 34.0210043, longitude: -118.2876044},
             radius: 50,
