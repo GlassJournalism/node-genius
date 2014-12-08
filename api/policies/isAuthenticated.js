@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
         return next();
     }
 
-    if (req.method === 'GET' && (req.path.indexOf('/card/render/') != -1 || req.path.indexOf('/card/preview/') != -1)) {
+    if (req.method === 'GET' && (req.path.indexOf('/card/render/') != -1 || req.path.indexOf('/card/preview/') != -1) || req.path.indexOf('/card/trigger') != -1) {
         return next();
     }
 
