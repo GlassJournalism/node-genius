@@ -1,0 +1,17 @@
+<br>
+<div class="row">
+    <div class="small-12 columns">
+        <h1>Content Trigger Phrases</h1>
+        <br><br>
+        <% for (var i = 0; i < cards.length; i++) { %>
+        <h2><%= cards[i].name %></h2>
+        <ul>
+            <% for (var j = 0; j < cards[i].triggerWords.length; j++) { %>
+            <li><%= cards[i].triggerWords[j] %></li>
+            <% } %>
+        </ul>
+        <br><br>
+        <% } %>
+
+    </div>
+</div>

@@ -21,6 +21,9 @@ var _ = require('underscore');
 var webshot = require('webshot');
 var hash = require('object-hash');
 var AWS = require('aws-sdk');
+AWS.config.update({
+    region: 'us-west-1'
+});
 var s3Stream = require('s3-upload-stream')(new AWS.S3());
 
 var Mixpanel = require('mixpanel');
@@ -142,7 +145,10 @@ module.exports = {
             Card.find({}, function (err, cards) {
                 async.map(cards, function (card, callback) {
                     //count the number of matches for each card
-                    async.reduce(card.triggerWords, {numMatches: 0, matchedTriggers: []}, function (memo, item, callback) {
+                    async.reduce(card.triggerWords, {
+                        numMatches: 0,
+                        matchedTriggers: []
+                    }, function (memo, item, callback) {
                         if (item.length != 0 && transcription.indexOf(item.toLowerCase()) != -1) {
                             memo.matchedTriggers.push(item);
                             memo.numMatches++;
@@ -216,7 +222,15 @@ module.exports = {
                     //set Etag to enable caching
                     var etag = hash.MD5(goodTriggers);
                     res.set('Etag', etag);
-                    return res.json(_.flatten(goodTriggers));
+                    if (req.wantsJSON || req.isSocket) {
+                        return res.json(_.flatten(goodTriggers));
+                    } else {
+                        return res.view('triggers',
+                            {
+                                triggers: goodTriggers,
+                                cards: cards
+                            });
+                    }
                 });
             });
         })
@@ -226,8 +240,7 @@ module.exports = {
      * Overrides for the settings in `config/controllers.js`
      * (specific to CardController)
      */
-    _config: {
-    }
+    _config: {}
 
 }
 
@@ -251,6 +264,9 @@ function cacheCard(baseUrl, cardId) {
 
     //take a screenshot of the preview page
     webshot(baseUrl + '/card/preview/' + cardId, options, function (err, renderStream) {
+        AWS.config.update({
+            region: 'us-west-2'
+        });
         var upload = s3Stream.upload({
             Bucket: 'glass-genius',
             Key: cardId + '.jpg',
