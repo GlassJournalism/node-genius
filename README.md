@@ -2,7 +2,7 @@
 
 ## Accessing Production
 
-Access Glass Genius CMS at http://glacial-ridge-6503.herokuapp.com/
+Access Glass Genius CMS at http://genius.glassjournalism.io
 
 ## Running Locally
 
